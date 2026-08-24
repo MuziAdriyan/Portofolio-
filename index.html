@@ -978,16 +978,52 @@ document.addEventListener("keydown", e => {
   overlay.addEventListener("click", e => { if(e.target === overlay) overlay.classList.remove("open"), (document.body.style.overflow=""); });
 });
 
-/* ============================================================
-   MARKET DATA (DEMO)
-   ============================================================ */
-const MARKET_WATCH = [
-  { pair:"BTC / USD", price:79567.00, change:3.11 },
-  { pair:"ETH / USD", price:2517.77, change:3.51 },
-  { pair:"NASDAQ", price:17890.42, change:-0.42 },
-  { pair:"S&P 500", price:5432.10, change:0.65 },
-  { pair:"GOLD", price:2370.00, change:0.21 }
-];
+// ✅ AMBIL DATA REAL-TIME DARI COINGECKO (GRATIS, TANPA API KEY)
+let MARKET_WATCH = [];
+let TERMINAL_DATA = { crypto:[], stock:[], index:[], commodity:[] };
+
+async function fetchMarketData() {
+  try {
+    // === AMBIL HARGA KRIPTO REAL-TIME ===
+    const cryptoRes = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,binancecoin,solana,ripple,cardano&order=market_cap_desc&per_page=20&page=1&sparkline=false&price_change_percentage=24h');
+    const cryptoData = await cryptoRes.json();
+
+    // === AMBIL HARGA SAHAM/INDEKS (Alpha Vantage — gratis, daftar di alphavantage.co/support/#api-key) ===
+    // Untuk demo, kita pakai data kripto dulu. Saham butuh API key.
+    
+    // === FORMAT DATA UNTUK MARKET WATCH ===
+    const btc = cryptoData.find(c => c.id === 'bitcoin');
+    const eth = cryptoData.find(c => c.id === 'ethereum');
+    
+    MARKET_WATCH = [
+      { pair:"BTC / USD", price:btc?.current_price || 0, change:btc?.price_change_percentage_24h || 0 },
+      { pair:"ETH / USD", price:eth?.current_price || 0, change:eth?.price_change_percentage_24h || 0 },
+      { pair:"NASDAQ", price:17890.42, change:-0.42 }, // ← butuh API key untuk real
+      { pair:"S&P 500", price:5432.10, change:0.65 },   // ← butuh API key untuk real
+      { pair:"GOLD", price:2370.00, change:0.21 }       // ← butuh API key untuk real
+    ];
+
+    // === FORMAT DATA UNTUK TERMINAL ===
+    TERMINAL_DATA.crypto = cryptoData.map(c => ({
+      sym: c.symbol.toUpperCase() + "/USDT",
+      price: c.current_price,
+      change: c.price_change_percentage_24h || 0
+    }));
+
+    // Render ulang setelah data masuk
+    renderMarketWatch();
+    renderTicker();
+    renderTerminal();
+    animateCounters(document.getElementById("marketGrid"));
+
+  } catch (err) {
+    console.error("❌ Gagal ambil data pasar:", err);
+  }
+}
+
+// === PERBARUI SETIAP 30 DETIK (bisa diubah ke 10000 = 10 detik) ===
+fetchMarketData(); // jalankan pertama kali
+setInterval(fetchMarketData, 30000); // perbarui tiap 30 detik
 
 function fmtPrice(n){
   return n.toLocaleString("en-US", { minimumFractionDigits:2, maximumFractionDigits:2 });
