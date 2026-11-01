@@ -316,17 +316,17 @@ footer .r{font:600 .68rem var(--hd);letter-spacing:.26em;color:var(--mute)}
 "use strict";
 /* ============ EDIT DATA DI SINI ============ */
 var CONFIG={
-  tiktok:{user:"",url:"https://www.tiktok.com/@zii_adyn?_r=1&_t=ZS-9B2jbg7yCmq"},          // contoh: user:"@username", url:"https://www.tiktok.com/@username"
-  instagram:{user:"",url:"https://www.instagram.com/muziadryn_?srtk=MTRqbTZncGY1ZXRlYw%3D%3D&utm_source=qr"},        // contoh: user:"@username", url:"https://t.me/username"
-  email:{addr:"muziadriyyan@gmail.com"}                   // contoh: addr:"nama@email.com"
+  tiktok:{user:"",url:""},          // contoh: user:"@username", url:"https://www.tiktok.com/@username"
+  telegram:{user:"",url:""},        // contoh: user:"@username", url:"https://t.me/username"
+  email:{addr:""}                   // contoh: addr:"nama@email.com"
 };
 var WA="6285778264944";
 var PROJECTS=[
  {n:"CRYPTO LIVE MARKET",d:"Website informasi cryptocurrency dan market monitoring.",u:"https://muzi4you.github.io/Crypto-/"},
- {n:"DIGITAL DASHBOARD",d:"Dashboard digital untuk menampilkan informasi dan pengelolaan data.",u:"https://muziadriyan.github.io/DASHBOARD-MUZI-ADRIYAN-/"},
- {n:"TOP UP ALL GAME DAN PAYMENT",d:"Platform layanan top up all geme dan top up payment serta paket internet.",u:"https://muzishopgame.my.id/"},
+ {n:"DIGITAL DASHBOARD",d:"Dashboard digital untuk menampilkan informasi dan pengelolaan data.",u:"https://zii4you.github.io/DASHBOARD-MUZI-ADRIYAN/"},
+ {n:"DIGITAL BUSINESS PLATFORM",d:"Platform layanan dan kebutuhan bisnis digital.",u:"https://zii4you.github.io/Akses-digital-by-zyy"},
  {n:"DIGITAL NEWS PORTAL",d:"Website informasi dan publikasi berita digital.",u:"https://muziadriyan.github.io/Berita-zyy/"},
- {n:"PERSONAL PORTFOLIO",d:"Website personal branding dan dokumentasi karya digital.",u:"https://muziadriyan.github.io/Portofolio-zyy/"}, 
+ {n:"PERSONAL PORTFOLIO",d:"Website personal branding dan dokumentasi karya digital.",u:"https://zii4you.github.io/Portofolio-Muzi-Adriyan-/"}
 ];
 var STACK=["HTML","CSS","JavaScript"]; // ubah sesuai teknologi proyek
 var SERVICES=[
@@ -369,11 +369,11 @@ var T=CONFIG.tiktok,G=CONFIG.telegram,M=CONFIG.email;
 var SOCIALS=[
  {k:"WhatsApp Business",v:"085778264944",h:"https://wa.me/6285778264944",i:"s-wa",f:1},
  {k:"WhatsApp Admin",v:"0855692174059",h:"https://wa.me/62855692174059",i:"s-wa",f:1},
- {k:"Instagram",v:"@zzyyadryn_",h:"https://www.instagram.com/muziadryn_?srtk=MTRqbTZncGY1ZXRlYw%3D%3D&utm_source=qr",i:"s-ig",f:1},
- {k:"TikTok",v:T.user||"@zyy_adyn",h:T.url,i:"s-tt",f:1},
+ {k:"Instagram",v:"@zzyyadryn_",h:"https://instagram.com/zzyyadryn_",i:"s-ig",f:1},
+ {k:"TikTok",v:T.user||"Isi username di CONFIG",h:T.url,i:"s-tt",f:1},
  {k:"GitHub",v:"github.com/muziadriyan",h:"https://github.com/muziadriyan",i:"s-gh",f:1},
- {k:"Telegram",v:G.user||"muziadryn",h:G.url,i:"s-tg",f:1},
- {k:"Email",v:M.addr||"muziadriyyan@gmail.com",h:M.addr?"mailto:"+M.addr:"",i:"s-ml",f:0}
+ {k:"Telegram",v:G.user||"Isi link di CONFIG",h:G.url,i:"s-tg",f:1},
+ {k:"Email",v:M.addr||"Isi email di CONFIG",h:M.addr?"mailto:"+M.addr:"",i:"s-ml",f:0}
 ];
 var cg=$("#cgrid"),fs=$("#fsoc");
 SOCIALS.forEach(function(s,i){
