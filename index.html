@@ -1,2441 +1,535 @@
 <!DOCTYPE html>
-<html lang="id" class="dark">
+<html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Muzi Adriyan — Professional Portfolio & Digital Creator</title>
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <style>
-        /* ==========================================
-           CSS RESET & VARIABLES (BLACK & WHITE 3D)
-           ================================---------- */
-        *, *::before, *::after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --bg-color: #030303;
-            --surface-color: #0a0a0a;
-            --card-bg: rgba(18, 18, 18, 0.65);
-            --border-color: rgba(255, 255, 255, 0.1);
-            --border-hover: rgba(255, 255, 255, 0.35);
-            --text-primary: #ffffff;
-            --text-secondary: #a3a3a3;
-            --text-muted: #737373;
-            --accent-silver: #d4d4d4;
-            --glow-shadow: 0 0 35px rgba(255, 255, 255, 0.06);
-            --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        html {
-            scroll-behavior: smooth;
-            background-color: var(--bg-color);
-            color: var(--text-primary);
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            overflow-x: hidden;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-primary);
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: var(--bg-color);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #262626;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #404040;
-        }
-
-        /* Custom Cursor for Desktop */
-        @media (min-width: 1024px) {
-            body { cursor: none; }
-            a, button, input, textarea, .interactive { cursor: none; }
-        }
-
-        .cursor-dot {
-            width: 8px;
-            height: 8px;
-            background-color: #ffffff;
-            border-radius: 50%;
-            position: fixed;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            z-index: 10000;
-            transition: opacity 0.3s ease;
-            box-shadow: 0 0 10px #ffffff;
-        }
-
-        .cursor-ring {
-            width: 40px;
-            height: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.35);
-            border-radius: 50%;
-            position: fixed;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            z-index: 9999;
-            transition: width 0.3s ease, height 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
-        }
-
-        body.cursor-hover .cursor-ring {
-            width: 65px;
-            height: 65px;
-            background-color: rgba(255, 255, 255, 0.04);
-            border-color: rgba(255, 255, 255, 0.8);
-        }
-
-        /* ==========================================
-           LOADING SCREEN (3-4 SECONDS, AUTO-IN)
-           ================================---------- */
-        #loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background-color: #000000;
-            z-index: 99999;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.8s ease;
-        }
-
-        #loading-screen.fade-out {
-            opacity: 0;
-            transform: scale(1.05);
-            visibility: hidden;
-        }
-
-        .loader-content {
-            text-align: center;
-            position: relative;
-            z-index: 2;
-            padding: 0 20px;
-        }
-
-        .loader-3d-logo {
-            width: 90px;
-            height: 90px;
-            margin: 0 auto 30px;
-            position: relative;
-            transform-style: preserve-3d;
-            animation: rotateLogo3D 3.5s infinite linear;
-        }
-
-        .logo-cube-face {
-            position: absolute;
-            width: 90px;
-            height: 90px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            background: rgba(255, 255, 255, 0.03);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 800;
-            font-size: 20px;
-            letter-spacing: 2px;
-            color: #ffffff;
-            box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.06);
-            backdrop-filter: blur(5px);
-        }
-
-        .logo-cube-face:nth-child(1) { transform: translateZ(45px); }
-        .logo-cube-face:nth-child(2) { transform: rotateY(180deg) translateZ(45px); }
-        .logo-cube-face:nth-child(3) { transform: rotateY(-90deg) translateZ(45px); }
-        .logo-cube-face:nth-child(4) { transform: rotateY(90deg) translateZ(45px); }
-        .logo-cube-face:nth-child(5) { transform: rotateX(90deg) translateZ(45px); }
-        .logo-cube-face:nth-child(6) { transform: rotateX(-90deg) translateZ(45px); }
-
-        @keyframes rotateLogo3D {
-            0% { transform: rotateX(0deg) rotateY(0deg); }
-            100% { transform: rotateX(360deg) rotateY(360deg); }
-        }
-
-        .loader-title {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 15px;
-            font-weight: 700;
-            letter-spacing: 4px;
-            color: #ffffff;
-            margin-bottom: 25px;
-            text-transform: uppercase;
-        }
-
-        .loader-progress-wrap {
-            width: 260px;
-            height: 2px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 2px;
-            margin: 0 auto;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .loader-progress-bar {
-            width: 0%;
-            height: 100%;
-            background: #ffffff;
-            box-shadow: 0 0 15px #ffffff;
-            transition: width 0.05s linear;
-        }
-
-        .loader-percentage {
-            margin-top: 15px;
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-secondary);
-            letter-spacing: 2px;
-        }
-
-        /* Background Particle & Grid Canvas */
-        #bg-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            pointer-events: none;
-            z-index: 1;
-            opacity: 0.35;
-        }
-
-        /* ==========================================
-           NAVIGATION BAR
-           ================================---------- */
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 1000;
-            padding: 22px 0;
-            transition: var(--transition-smooth);
-            background: transparent;
-        }
-
-        header.scrolled {
-            padding: 14px 0;
-            background: rgba(3, 3, 3, 0.85);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border-color);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-        }
-
-        .nav-container {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 24px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .logo {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 20px;
-            font-weight: 800;
-            letter-spacing: 1.5px;
-            color: #ffffff;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .logo span {
-            color: var(--text-secondary);
-            font-weight: 400;
-        }
-
-        .nav-menu {
-            display: flex;
-            list-style: none;
-            gap: 32px;
-            align-items: center;
-        }
-
-        .nav-link {
-            text-decoration: none;
-            color: var(--text-secondary);
-            font-size: 13px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            transition: color 0.3s ease;
-            position: relative;
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background-color: #ffffff;
-            transition: width 0.3s ease;
-        }
-
-        .nav-link:hover, .nav-link.active {
-            color: #ffffff;
-        }
-
-        .nav-link:hover::after, .nav-link.active::after {
-            width: 100%;
-        }
-
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            gap: 6px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            z-index: 1001;
-            padding: 4px;
-        }
-
-        .hamburger span {
-            display: block;
-            width: 28px;
-            height: 2px;
-            background-color: #ffffff;
-            transition: var(--transition-smooth);
-        }
-
-        /* Mobile Menu */
-        .mobile-menu {
-            position: fixed;
-            top: 0;
-            right: -100%;
-            width: 100%;
-            height: 100vh;
-            background: rgba(3, 3, 3, 0.98);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            z-index: 999;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: right 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .mobile-menu.active {
-            right: 0;
-        }
-
-        .mobile-menu ul {
-            list-style: none;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
-
-        .mobile-menu a {
-            text-decoration: none;
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 22px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            color: var(--text-secondary);
-            transition: color 0.3s ease;
-        }
-
-        .mobile-menu a:hover, .mobile-menu a.active {
-            color: #ffffff;
-        }
-
-        /* ==========================================
-           MAIN CONTENT WRAPPER
-           ================================---------- */
-        main {
-            position: relative;
-            z-index: 2;
-        }
-
-        section {
-            padding: 130px 0;
-            position: relative;
-        }
-
-        .container {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 80px;
-        }
-
-        .section-tag {
-            display: inline-block;
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: var(--text-secondary);
-            margin-bottom: 16px;
-            padding: 6px 18px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border-color);
-            border-radius: 30px;
-        }
-
-        .section-title {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(32px, 4vw, 46px);
-            font-weight: 800;
-            letter-spacing: -1px;
-            color: #ffffff;
-            margin-bottom: 16px;
-        }
-
-        .section-desc {
-            font-size: 15px;
-            color: var(--text-secondary);
-            max-width: 600px;
-            margin: 0 auto;
-            line-height: 1.7;
-        }
-
-        /* ==========================================
-           HERO SECTION / PROFIL UTAMA
-           ================================---------- */
-        .hero-section {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            padding-top: 150px;
-            position: relative;
-        }
-
-        .hero-grid {
-            display: grid;
-            grid-template-columns: 1.25fr 0.75fr;
-            gap: 60px;
-            align-items: center;
-        }
-
-        .hero-content {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 8px 18px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid var(--border-color);
-            border-radius: 30px;
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            color: var(--accent-silver);
-            margin-bottom: 24px;
-            box-shadow: var(--glow-shadow);
-        }
-
-        .hero-badge .status-dot {
-            width: 7px;
-            height: 7px;
-            background-color: #ffffff;
-            border-radius: 50%;
-            box-shadow: 0 0 10px #ffffff;
-            animation: pulseDot 2s infinite;
-        }
-
-        @keyframes pulseDot {
-            0% { transform: scale(0.95); opacity: 1; }
-            70% { transform: scale(1); opacity: 0.4; }
-            100% { transform: scale(0.95); opacity: 1; }
-        }
-
-        .hero-title {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(42px, 6vw, 76px);
-            font-weight: 800;
-            line-height: 1.05;
-            letter-spacing: -2px;
-            color: #ffffff;
-            margin-bottom: 16px;
-        }
-
-        .hero-roles {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(15px, 1.8vw, 19px);
-            font-weight: 600;
-            color: var(--text-secondary);
-            margin-bottom: 22px;
-            letter-spacing: 0.5px;
-            min-height: 28px;
-        }
-
-        .typing-cursor {
-            display: inline-block;
-            width: 2px;
-            height: 18px;
-            background-color: #ffffff;
-            margin-left: 4px;
-            animation: blinkCursor 0.8s infinite;
-            vertical-align: middle;
-        }
-
-        @keyframes blinkCursor {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-
-        .hero-headline-quote {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 16px;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 16px;
-            letter-spacing: 0.5px;
-            border-left: 2px solid #ffffff;
-            padding-left: 14px;
-        }
-
-        .hero-bio {
-            font-size: 15px;
-            color: var(--text-secondary);
-            line-height: 1.75;
-            margin-bottom: 35px;
-            max-width: 620px;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            padding: 14px 28px;
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 13px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            border-radius: 8px;
-            text-decoration: none;
-            transition: var(--transition-smooth);
-            position: relative;
-            overflow: hidden;
-            border: 1px solid transparent;
-        }
-
-        .btn-primary {
-            background-color: #ffffff;
-            color: #000000;
-            box-shadow: 0 4px 25px rgba(255, 255, 255, 0.2);
-        }
-
-        .btn-primary:hover {
-            background-color: #e5e5e5;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 30px rgba(255, 255, 255, 0.35);
-        }
-
-        .btn-secondary {
-            background-color: rgba(255, 255, 255, 0.04);
-            color: #ffffff;
-            border-color: var(--border-color);
-            backdrop-filter: blur(10px);
-        }
-
-        .btn-secondary:hover {
-            background-color: rgba(255, 255, 255, 0.09);
-            border-color: var(--border-hover);
-            transform: translateY(-3px);
-            box-shadow: var(--glow-shadow);
-        }
-
-        /* Hero 3D Visual Profile Card */
-        .hero-visual {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            perspective: 1000px;
-        }
-
-        .profile-card-3d {
-            width: 100%;
-            max-width: 360px;
-            background: linear-gradient(135deg, rgba(22, 22, 22, 0.85), rgba(8, 8, 8, 0.95));
-            border: 1px solid var(--border-color);
-            border-radius: 28px;
-            padding: 28px;
-            position: relative;
-            box-shadow: 0 35px 60px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.12);
-            animation: floatProfileCard 6s ease-in-out infinite;
-            transform-style: preserve-3d;
-            transition: transform 0.1s ease;
-        }
-
-        @keyframes floatProfileCard {
-            0%, 100% { transform: translateY(0) rotateX(2deg) rotateY(-2deg); }
-            50% { transform: translateY(-12px) rotateX(-2deg) rotateY(2deg); }
-        }
-
-        .profile-img-wrap {
-            width: 100%;
-            height: 320px;
-            border-radius: 20px;
-            overflow: hidden;
-            position: relative;
-            border: 1px solid var(--border-color);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            background: #0a0a0a;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .profile-img-wrap img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: grayscale(15%) contrast(105%);
-            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .profile-card-3d:hover .profile-img-wrap img {
-            transform: scale(1.06);
-        }
-
-        .profile-card-info {
-            margin-top: 22px;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            text-align: center;
-        }
-
-        .profile-card-name {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 19px;
-            font-weight: 700;
-            color: #ffffff;
-            letter-spacing: 0.5px;
-        }
-
-        .profile-card-tag {
-            font-size: 12px;
-            color: var(--text-secondary);
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-        }
-
-        .profile-floating-tag {
-            position: absolute;
-            background: rgba(12, 12, 12, 0.92);
-            border: 1px solid var(--border-color);
-            backdrop-filter: blur(12px);
-            padding: 10px 16px;
-            border-radius: 14px;
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            z-index: 10;
-        }
-
-        .profile-floating-tag.tag-1 {
-            top: -20px;
-            left: -25px;
-            animation: floatTag1 4.5s ease-in-out infinite;
-        }
-
-        .profile-floating-tag.tag-2 {
-            bottom: 50px;
-            right: -25px;
-            animation: floatTag2 5.5s ease-in-out infinite;
-        }
-
-        @keyframes floatTag1 {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-6px); }
-        }
-
-        @keyframes floatTag2 {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(6px); }
-        }
-
-        /* ==========================================
-           ABOUT ME SECTION
-           ================================---------- */
-        .about-section {
-            background-color: var(--surface-color);
-            border-top: 1px solid var(--border-color);
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .about-grid {
-            display: grid;
-            grid-template-columns: 1.1fr 0.9fr;
-            gap: 60px;
-            align-items: center;
-        }
-
-        .about-content-box h3 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 28px;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 20px;
-            letter-spacing: -0.5px;
-        }
-
-        .about-content-box p {
-            font-size: 15px;
-            color: var(--text-secondary);
-            line-height: 1.8;
-            margin-bottom: 18px;
-        }
-
-        .about-philosophy {
-            margin-top: 25px;
-            padding: 20px 24px;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            font-family: 'Space Grotesk', sans-serif;
-            font-style: italic;
-            font-size: 15px;
-            color: #ffffff;
-            letter-spacing: 0.5px;
-        }
-
-        .about-stats-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-        }
-
-        .about-stat-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            padding: 28px 24px;
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            transition: var(--transition-smooth);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
-        }
-
-        .about-stat-card:hover {
-            border-color: var(--border-hover);
-            transform: translateY(-6px);
-            box-shadow: var(--glow-shadow);
-        }
-
-        .about-stat-num {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 38px;
-            font-weight: 800;
-            color: #ffffff;
-            margin-bottom: 6px;
-        }
-
-        .about-stat-lbl {
-            font-size: 12px;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            font-weight: 600;
-        }
-
-        /* ==========================================
-           EXPERTISE SECTION
-           ================================---------- */
-        .expertise-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-        }
-
-        .expertise-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 24px;
-            padding: 38px 32px;
-            backdrop-filter: blur(12px);
-            transition: var(--transition-smooth);
-            position: relative;
-            overflow: hidden;
-            transform-style: preserve-3d;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-        }
-
-        .expertise-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .expertise-card:hover {
-            border-color: var(--border-hover);
-            transform: translateY(-8px);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7), var(--glow-shadow);
-        }
-
-        .expertise-card:hover::before {
-            opacity: 1;
-        }
-
-        .expertise-icon-box {
-            width: 56px;
-            height: 56px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 24px;
-            color: #ffffff;
-            transition: var(--transition-smooth);
-        }
-
-        .expertise-card:hover .expertise-icon-box {
-            background: #ffffff;
-            color: #000000;
-            transform: scale(1.08) rotate(4deg);
-        }
-
-        .expertise-card h3 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 20px;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 18px;
-            letter-spacing: -0.5px;
-        }
-
-        .expertise-list {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .expertise-list li {
-            font-size: 14px;
-            color: var(--text-secondary);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .expertise-list li::before {
-            content: '';
-            width: 4px;
-            height: 4px;
-            background-color: var(--text-muted);
-            border-radius: 50%;
-        }
-
-        /* ==========================================
-           STATISTICS & MONTHLY INCOME SECTION
-           ================================---------- */
-        .income-section {
-            background-color: var(--surface-color);
-            border-top: 1px solid var(--border-color);
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .income-dashboard-box {
-            background: linear-gradient(145deg, rgba(16, 16, 16, 0.9), rgba(6, 6, 6, 0.95));
-            border: 1px solid var(--border-color);
-            border-radius: 30px;
-            padding: 50px;
-            box-shadow: 0 35px 70px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .income-grid {
-            display: grid;
-            grid-template-columns: 1.1fr 0.9fr;
-            gap: 50px;
-            align-items: center;
-        }
-
-        .income-badge-top {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--text-secondary);
-            margin-bottom: 16px;
-            padding: 6px 16px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-        }
-
-        .income-main-title {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(26px, 3.5vw, 38px);
-            font-weight: 800;
-            color: #ffffff;
-            margin-bottom: 20px;
-            letter-spacing: -1px;
-        }
-
-        .income-card-display {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 28px;
-            margin-bottom: 24px;
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
-        }
-
-        .income-amount-text {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(20px, 2.3vw, 30px);
-            font-weight: 700;
-            color: #ffffff;
-            letter-spacing: -0.5px;
-            margin-bottom: 10px;
-        }
-
-        .income-sub-desc {
-            font-size: 14px;
-            color: var(--text-secondary);
-            line-height: 1.6;
-        }
-
-        .income-features-list {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }
-
-        .income-feature-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .income-feature-item svg {
-            width: 18px;
-            height: 18px;
-            color: #ffffff;
-            flex-shrink: 0;
-        }
-
-        /* Chart Simulation Box */
-        .income-chart-card {
-            background: rgba(8, 8, 8, 0.85);
-            border: 1px solid var(--border-color);
-            border-radius: 22px;
-            padding: 32px;
-            height: 100%;
-            min-height: 310px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .chart-header-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .chart-title-text {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 15px;
-            font-weight: 700;
-            color: #ffffff;
-            letter-spacing: 0.5px;
-        }
-
-        .chart-tag-growth {
-            font-size: 11px;
-            font-weight: 700;
-            color: #ffffff;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid var(--border-color);
-            padding: 4px 10px;
-            border-radius: 20px;
-            letter-spacing: 1px;
-        }
-
-        .chart-bars-container {
-            flex-grow: 1;
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-between;
-            gap: 14px;
-            padding-top: 20px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 10px;
-        }
-
-        .chart-bar-column {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            height: 100%;
-            justify-content: flex-end;
-        }
-
-        .chart-bar-fill {
-            width: 100%;
-            background: linear-gradient(180deg, #ffffff, #3f3f3f);
-            border-radius: 6px 6px 0 0;
-            transition: height 1s ease;
-        }
-
-        .chart-bar-fill:hover {
-            background: linear-gradient(180deg, #ffffff, #a3a3a3);
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
-        }
-
-        .chart-bar-label {
-            font-size: 11px;
-            color: var(--text-muted);
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 600;
-        }
-
-        /* ==========================================
-           PROJECT PORTFOLIO SECTION (5 WEBSITES)
-           ================================---------- */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-            gap: 30px;
-        }
-
-        .project-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 24px;
-            overflow: hidden;
-            backdrop-filter: blur(12px);
-            transition: var(--transition-smooth);
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-        }
-
-        .project-card:hover {
-            border-color: var(--border-hover);
-            transform: translateY(-10px);
-            box-shadow: 0 35px 70px rgba(0, 0, 0, 0.8), var(--glow-shadow);
-        }
-
-        .project-thumbnail {
-            width: 100%;
-            height: 200px;
-            background: #0d0d0d;
-            position: relative;
-            overflow: hidden;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .project-thumbnail-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at center, #262626 0%, #030303 100%);
-            opacity: 0.8;
-            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .project-card:hover .project-thumbnail-bg {
-            transform: scale(1.08);
-        }
-
-        .project-thumbnail-content {
-            position: relative;
-            z-index: 2;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .project-thumb-icon {
-            width: 48px;
-            height: 48px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            color: #ffffff;
-            margin-bottom: 12px;
-            transition: var(--transition-smooth);
-        }
-
-        .project-card:hover .project-thumb-icon {
-            background: #ffffff;
-            color: #000000;
-            transform: scale(1.1);
-        }
-
-        .project-thumb-title {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 13px;
-            font-weight: 700;
-            color: #ffffff;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-        }
-
-        .project-body {
-            padding: 30px;
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-        }
-
-        .project-status {
-            display: inline-block;
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: var(--text-secondary);
-            margin-bottom: 12px;
-        }
-
-        .project-title {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 21px;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 12px;
-            letter-spacing: -0.5px;
-        }
-
-        .project-desc {
-            font-size: 14px;
-            color: var(--text-secondary);
-            line-height: 1.7;
-            margin-bottom: 22px;
-            flex-grow: 1;
-        }
-
-        .project-tech-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 24px;
-        }
-
-        .project-tech-tag {
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--text-secondary);
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border-color);
-            padding: 4px 12px;
-            border-radius: 20px;
-        }
-
-        .project-visit-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            width: 100%;
-            padding: 13px 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 13px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            color: #ffffff;
-            text-decoration: none;
-            transition: var(--transition-smooth);
-        }
-
-        .project-visit-btn:hover {
-            background: #ffffff;
-            color: #000000;
-            border-color: #ffffff;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(255, 255, 255, 0.3);
-        }
-
-        /* ==========================================
-           DIGITAL SERVICES SECTION
-           ================================---------- */
-        .services-section {
-            background-color: var(--surface-color);
-            border-top: 1px solid var(--border-color);
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            margin-bottom: 60px;
-        }
-
-        .service-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 24px;
-            padding: 36px 30px;
-            backdrop-filter: blur(12px);
-            transition: var(--transition-smooth);
-            position: relative;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-        }
-
-        .service-card:hover {
-            border-color: var(--border-hover);
-            transform: translateY(-8px);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7), var(--glow-shadow);
-        }
-
-        .service-icon-box {
-            width: 52px;
-            height: 52px;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid var(--border-color);
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #ffffff;
-            margin-bottom: 22px;
-            transition: var(--transition-smooth);
-        }
-
-        .service-card:hover .service-icon-box {
-            background: #ffffff;
-            color: #000000;
-            transform: scale(1.1) rotate(-4deg);
-        }
-
-        .service-card h3 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 19px;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 12px;
-            letter-spacing: -0.5px;
-        }
-
-        .service-card p {
-            font-size: 14px;
-            color: var(--text-secondary);
-            line-height: 1.7;
-        }
-
-        .services-extra-banner {
-            text-align: center;
-            padding: 35px;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-        }
-
-        .services-extra-banner h3 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 22px;
-            font-weight: 800;
-            color: #ffffff;
-            letter-spacing: 1px;
-        }
-
-        /* ==========================================
-           CONTACT & SOCIAL MEDIA SECTION
-           ================================---------- */
-        .contact-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: flex-start;
-        }
-
-        .contact-info-box h3 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 30px;
-            font-weight: 800;
-            color: #ffffff;
-            margin-bottom: 16px;
-            letter-spacing: -1px;
-        }
-
-        .contact-info-box p {
-            font-size: 15px;
-            color: var(--text-secondary);
-            line-height: 1.8;
-            margin-bottom: 35px;
-        }
-
-        .social-cards-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-            margin-bottom: 30px;
-        }
-
-        .social-card-item {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 18px;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            text-decoration: none;
-            transition: var(--transition-smooth);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-        }
-
-        .social-card-item:hover {
-            border-color: var(--border-hover);
-            transform: translateY(-4px);
-            background: rgba(255, 255, 255, 0.04);
-            box-shadow: var(--glow-shadow);
-        }
-
-        .social-card-icon {
-            width: 42px;
-            height: 42px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #ffffff;
-            flex-shrink: 0;
-            transition: var(--transition-smooth);
-        }
-
-        .social-card-item:hover .social-card-icon {
-            background: #ffffff;
-            color: #000000;
-        }
-
-        .social-card-details h4 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 15px;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 2px;
-        }
-
-        .social-card-details span {
-            font-size: 12px;
-            color: var(--text-secondary);
-        }
-
-        .contact-cta-buttons {
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-        }
-
-        .contact-form-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 24px;
-            padding: 40px;
-            backdrop-filter: blur(12px);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
-        }
-
-        .form-group-item {
-            margin-bottom: 20px;
-        }
-
-        .form-label-text {
-            display: block;
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 13px;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 8px;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-
-        .form-input-field, .form-textarea-field {
-            width: 100%;
-            background: rgba(8, 8, 8, 0.85);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 14px 18px;
-            color: #ffffff;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 15px;
-            transition: var(--transition-smooth);
-        }
-
-        .form-input-field:focus, .form-textarea-field:focus {
-            outline: none;
-            border-color: #ffffff;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
-        }
-
-        .form-textarea-field {
-            resize: vertical;
-            min-height: 130px;
-        }
-
-        .form-submit-btn {
-            width: 100%;
-            background: #ffffff;
-            color: #000000;
-            border: none;
-            border-radius: 12px;
-            padding: 16px;
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 14px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: var(--transition-smooth);
-            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.2);
-        }
-
-        .form-submit-btn:hover {
-            background: #e5e5e5;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(255, 255, 255, 0.35);
-        }
-
-        /* ==========================================
-           FOOTER
-           ================================---------- */
-        footer {
-            background-color: #000000;
-            border-top: 1px solid var(--border-color);
-            padding: 60px 0;
-            text-align: center;
-        }
-
-        .footer-inner-box {
-            max-width: 600px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .footer-brand {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 22px;
-            font-weight: 800;
-            color: #ffffff;
-            letter-spacing: 1.5px;
-        }
-
-        .footer-tagline {
-            font-size: 14px;
-            color: var(--text-secondary);
-            font-family: 'Space Grotesk', sans-serif;
-            letter-spacing: 0.5px;
-        }
-
-        .footer-copyright {
-            font-size: 12px;
-            color: var(--text-muted);
-            letter-spacing: 1px;
-            margin-top: 10px;
-        }
-
-        /* ==========================================
-           RESPONSIVE MEDIA QUERIES
-           ================================---------- */
-        @media (max-width: 1024px) {
-            .hero-grid, .about-grid, .income-grid, .contact-grid {
-                grid-template-columns: 1fr;
-                gap: 45px;
-            }
-            .hero-visual {
-                margin-top: 20px;
-            }
-            .nav-menu {
-                display: none;
-            }
-            .hamburger {
-                display: flex;
-            }
-        }
-
-        @media (max-width: 768px) {
-            section {
-                padding: 90px 0;
-            }
-            .social-cards-grid {
-                grid-template-columns: 1fr;
-            }
-            .income-dashboard-box {
-                padding: 30px 20px;
-            }
-            .contact-form-card {
-                padding: 24px;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MUZI ADRIYAN — Web Developer | Digital Creator | Technology Enthusiast</title>
+<meta name="description" content="Website personal branding Muzi Adriyan: Web Developer, Digital Creator, dan Technology Enthusiast dari Bekasi, Indonesia.">
+<meta name="theme-color" content="#000000">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23000'/%3E%3Ctext x='32' y='42' font-size='28' text-anchor='middle' fill='%23fff' font-family='sans-serif' font-weight='700'%3EMA%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#000;--fg:#f4f4f4;--mute:#9a9a9a;--line:rgba(220,220,220,.22);--glass:rgba(255,255,255,.05);--silver:linear-gradient(135deg,#fff,#b9b9b9 45%,#6e6e6e);--hd:'Sora','Segoe UI',system-ui,sans-serif;--bd:'Manrope','Segoe UI',system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{background:var(--bg);color:var(--fg);font-family:var(--bd);line-height:1.7;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body.lock{overflow:hidden}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+:focus-visible{outline:2px solid #fff;outline-offset:3px}
+/* ===== SPACE BACKGROUND (persistent) ===== */
+#space{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block}
+.neb{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.neb i{position:absolute;border-radius:50%;filter:blur(70px);opacity:.16;background:radial-gradient(circle,#fff,transparent 70%);will-change:transform}
+.neb i:nth-child(1){width:60vw;height:60vw;left:-15vw;top:-10vw;animation:nb1 38s ease-in-out infinite alternate}
+.neb i:nth-child(2){width:50vw;height:50vw;right:-12vw;top:35vh;opacity:.11;animation:nb2 46s ease-in-out infinite alternate}
+.neb i:nth-child(3){width:45vw;height:45vw;left:25vw;bottom:-20vw;opacity:.09;animation:nb1 52s ease-in-out infinite alternate-reverse}
+.galaxy{position:fixed;z-index:0;pointer-events:none;width:120vmax;height:120vmax;left:50%;top:50%;margin:-60vmax 0 0 -60vmax;opacity:.2;border-radius:50%;
+background:conic-gradient(from 0deg,transparent,rgba(255,255,255,.35),transparent 20%,rgba(255,255,255,.2) 35%,transparent 55%,rgba(255,255,255,.3) 75%,transparent);
+-webkit-mask:radial-gradient(circle,#000 0,transparent 55%);mask:radial-gradient(circle,#000 0,transparent 55%);filter:blur(18px);animation:spin 240s linear infinite;will-change:transform}
+@keyframes nb1{to{transform:translate(12vw,10vh) scale(1.2)}}
+@keyframes nb2{to{transform:translate(-14vw,-8vh) scale(1.15)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+main,footer,nav{position:relative;z-index:2}
+/* ===== LOADER ===== */
+#loader{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;background:radial-gradient(circle at 50% 50%,rgba(0,0,0,.15),rgba(0,0,0,.72));transition:transform 1s cubic-bezier(.6,0,.2,1),opacity 1s ease;transform-origin:50% 45%}
+#loader.zoom{transform:scale(4);opacity:0;pointer-events:none}
+.lplanet{position:absolute;width:min(46vmin,360px);aspect-ratio:1;border-radius:50%;right:-6vmin;bottom:-8vmin;background:radial-gradient(circle at 30% 28%,#fff 0,#cfcfcf 18%,#6b6b6b 52%,#0b0b0b 85%);box-shadow:0 0 70px rgba(255,255,255,.25),inset -24px -20px 50px rgba(0,0,0,.85);overflow:hidden;animation:lfloat 6s ease-in-out infinite}
+.lplanet::after{content:"";position:absolute;inset:0;border-radius:50%;background:repeating-linear-gradient(100deg,rgba(0,0,0,.28) 0 7%,transparent 7% 15%);animation:band 14s linear infinite;mix-blend-mode:multiply}
+@keyframes band{to{background-position:300px 0}}
+@keyframes lfloat{50%{transform:translateY(-14px)}}
+.logo{position:relative;width:150px;height:150px;margin-bottom:26px}
+.logo svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.logo .orb{transform-origin:75px 75px;animation:spin 6s linear infinite}
+.logo .orb2{transform-origin:75px 75px;animation:spin 9s linear infinite reverse}
+.logo b{position:absolute;inset:0;display:grid;place-items:center;font:800 34px var(--hd);letter-spacing:.04em;text-shadow:0 0 22px rgba(255,255,255,.7)}
+.l-top{font:300 clamp(.72rem,2.6vw,.95rem);letter-spacing:.38em;color:var(--mute)}
+.l-name{font:800 clamp(2rem,9vw,4.2rem);letter-spacing:.14em;margin:6px 0;background:var(--silver);-webkit-background-clip:text;background-clip:text;color:transparent;animation:glow 3s ease-in-out infinite}
+.l-sub{font:300 italic 1rem var(--bd);color:#ccc;margin-bottom:34px}
+.bar{width:min(300px,70vw);height:2px;background:rgba(255,255,255,.15);border-radius:2px;overflow:hidden}
+.bar span{display:block;height:100%;width:0;background:#fff;box-shadow:0 0 12px #fff}
+.pct{margin-top:10px;font:600 .85rem var(--hd);letter-spacing:.3em;color:var(--mute)}
+@keyframes glow{50%{filter:drop-shadow(0 0 14px rgba(255,255,255,.55))}}
+/* ===== NAV ===== */
+nav{position:fixed;top:0;left:0;right:0;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(16px,4vw,48px);background:rgba(0,0,0,.35);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line);z-index:50;transform:translateY(-100%);transition:transform .8s ease .2s}
+body.ready nav{transform:none}
+.brand{font:800 1rem var(--hd);letter-spacing:.22em}
+.menu{display:flex;gap:6px;list-style:none}
+.menu a{position:relative;display:block;padding:8px 14px;font:600 .72rem var(--hd);letter-spacing:.18em;color:var(--mute);transition:color .3s}
+.menu a::after{content:"";position:absolute;left:50%;bottom:2px;width:0;height:2px;background:#fff;box-shadow:0 0 10px #fff;transition:.35s;transform:translateX(-50%)}
+.menu a:hover,.menu a.on{color:#fff}
+.menu a.on::after{width:60%}
+.burger{display:none;width:42px;height:42px;background:none;border:1px solid var(--line);border-radius:10px;cursor:pointer;color:#fff}
+.burger span{display:block;width:18px;height:2px;background:#fff;margin:4px auto;transition:.3s}
+.burger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+.burger.open span:nth-child(2){opacity:0}
+.burger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+@media(max-width:860px){.burger{display:block}.menu{position:fixed;top:64px;left:0;right:0;flex-direction:column;gap:0;padding:10px 16px 18px;background:rgba(0,0,0,.88);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--line);transform:translateY(-130%);transition:transform .45s ease;z-index:-1}.menu.open{transform:none}.menu a{padding:14px 8px;border-bottom:1px solid rgba(255,255,255,.07)}.menu a.on::after{left:8px;transform:none;width:24px}}
+/* ===== LAYOUT ===== */
+section{position:relative;padding:clamp(80px,12vw,130px) clamp(18px,5vw,56px)}
+.wrap{max-width:1160px;margin:0 auto}
+.title{font:800 clamp(1.8rem,5vw,3rem);letter-spacing:.1em;text-align:center;background:var(--silver);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:12px}
+.title+.ln{width:70px;height:2px;margin:0 auto 54px;background:#fff;box-shadow:0 0 14px #fff}
+.rv{opacity:0;transform:translateY(40px) scale(.97);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0s)}
+.rv.in{opacity:1;transform:none}
+/* ===== 3D CARD ===== */
+.card{position:relative;background:var(--glass);border:1px solid var(--line);border-radius:20px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 18px 50px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.12);transform-style:preserve-3d;transition:border-color .4s,box-shadow .4s}
+.card:hover{border-color:rgba(255,255,255,.6);box-shadow:0 24px 60px rgba(0,0,0,.7),0 0 36px rgba(255,255,255,.14),inset 0 1px 0 rgba(255,255,255,.3)}
+.tilt{transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .15s ease-out}
+.tilt .gl{position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.2),transparent 45%)}
+.tilt:hover .gl{opacity:1}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 28px;border-radius:50px;font:600 .74rem var(--hd);letter-spacing:.16em;cursor:pointer;border:1px solid #fff;background:#fff;color:#000;transition:.3s;text-align:center}
+.btn:hover{box-shadow:0 0 30px rgba(255,255,255,.6);transform:translateY(-3px)}
+.btn.ghost{background:transparent;color:#fff;border-color:rgba(255,255,255,.55)}
+.btn.ghost:hover{background:rgba(255,255,255,.1)}
+.ico{width:1em;height:1em;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.ico.f{fill:currentColor;stroke:none}
+/* ===== HERO ===== */
+#home{min-height:100vh;min-height:100svh;display:flex;align-items:center;padding-top:110px}
+.hero{display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center}
+.role{font:600 clamp(.66rem,1.8vw,.8rem) var(--hd);letter-spacing:.28em;color:var(--mute);margin-bottom:18px}
+h1{font:800 clamp(2.6rem,8vw,5.6rem);line-height:1.02;letter-spacing:.05em;background:var(--silver);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 6px 24px rgba(255,255,255,.18))}
+.head{font:300 clamp(1rem,2.6vw,1.45rem) var(--hd);letter-spacing:.06em;margin:22px 0 18px}
+.desc{color:#bdbdbd;max-width:560px;margin-bottom:12px;font-size:.98rem}
+.cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:28px}
+.photo{display:grid;place-items:center;perspective:900px}
+.avatar{position:relative;width:min(78vw,380px);aspect-ratio:1;border-radius:50%;padding:7px;background:conic-gradient(from 0deg,#fff,#4a4a4a,#d8d8d8,#262626,#fff);animation:float 6s ease-in-out infinite;box-shadow:0 0 60px rgba(255,255,255,.28),0 40px 60px rgba(0,0,0,.8);transform-style:preserve-3d}
+.avatar::before{content:"";position:absolute;inset:-14px;border-radius:50%;border:1px solid rgba(255,255,255,.28);border-top-color:#fff;animation:spin 9s linear infinite}
+.avatar::after{content:"";position:absolute;inset:-30px;border-radius:50%;border:1px dashed rgba(255,255,255,.14);border-bottom-color:rgba(255,255,255,.7);animation:spin 16s linear infinite reverse}
+.avatar>div{width:100%;height:100%;border-radius:50%;overflow:hidden;background:#0a0a0a;display:grid;place-items:center;border:3px solid #000;position:relative}
+.avatar img{width:100%;height:100%;object-fit:cover;filter:grayscale(.15) contrast(1.05)}
+.avatar .fb{position:absolute;font:800 4rem var(--hd);color:#555;z-index:-1}
+@keyframes float{50%{transform:translateY(-16px) rotateX(3deg) rotateY(-3deg)}}
+@media(max-width:860px){.hero{grid-template-columns:1fr;text-align:center}.photo{order:-1}.desc{margin-inline:auto}.cta{justify-content:center}}
+/* ===== ABOUT ===== */
+.about{display:grid;grid-template-columns:1.2fr .8fr;gap:24px}
+.about .card{padding:34px}
+.about p{color:#c4c4c4;margin-bottom:16px}
+.info{list-style:none;display:grid;gap:16px}
+.info li{display:flex;flex-direction:column;border-bottom:1px solid rgba(255,255,255,.1);padding-bottom:12px}
+.info small{font:600 .66rem var(--hd);letter-spacing:.22em;color:var(--mute)}
+.info span{font-weight:500}
+@media(max-width:860px){.about{grid-template-columns:1fr}}
+/* ===== GRID CARDS ===== */
+.grid{display:grid;gap:22px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.sk{padding:30px}
+.sk .no{position:absolute;top:18px;right:22px;font:800 2.2rem var(--hd);color:rgba(255,255,255,.07)}
+.ib{width:58px;height:58px;display:grid;place-items:center;border-radius:16px;font-size:28px;margin-bottom:20px;border:1px solid var(--line);background:linear-gradient(145deg,rgba(255,255,255,.14),rgba(255,255,255,.02));box-shadow:0 8px 24px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.3);transform:translateZ(40px)}
+.sk h3,.sv h3{font:700 .9rem var(--hd);letter-spacing:.12em;margin-bottom:10px;transform:translateZ(24px)}
+.sk p,.sv p{color:#aaa;font-size:.92rem}
+/* ===== INCOME ===== */
+.inc{max-width:720px;margin:0 auto;text-align:center;padding:clamp(34px,6vw,64px) clamp(22px,5vw,56px);background:rgba(0,0,0,.72);border:1px solid #cfcfcf;box-shadow:0 0 50px rgba(255,255,255,.14),0 30px 70px rgba(0,0,0,.8),inset 0 0 40px rgba(255,255,255,.04)}
+.inc .ib{margin:0 auto 20px;width:70px;height:70px;font-size:34px}
+.inc h3{font:600 .8rem var(--hd);letter-spacing:.32em;color:var(--mute);margin-bottom:18px}
+.num{font:800 clamp(1.5rem,5.6vw,3.1rem);line-height:1.25;color:#fff;text-shadow:0 0 28px rgba(255,255,255,.55),0 4px 0 rgba(120,120,120,.45);font-variant-numeric:tabular-nums}
+.lab{display:inline-block;margin:18px 0;padding:7px 18px;border:1px solid var(--line);border-radius:40px;font:600 .68rem var(--hd);letter-spacing:.24em}
+.inc p{color:#b5b5b5;font-style:italic}
+/* ===== PROJECTS ===== */
+.pj{overflow:hidden;display:flex;flex-direction:column}
+.thumb{position:relative;aspect-ratio:16/10;background:#050505;border-bottom:1px solid var(--line);overflow:hidden}
+.thumb svg{position:absolute;inset:0;width:100%;height:100%}
+.thumb iframe{position:absolute;top:0;left:0;width:1280px;height:800px;border:0;transform-origin:0 0;pointer-events:none;background:#fff;opacity:0;transition:opacity .8s}
+.thumb iframe.ok{opacity:1}
+.pj .bd{padding:24px;display:flex;flex-direction:column;flex:1;gap:10px}
+.pj small{font:600 .66rem var(--hd);letter-spacing:.22em;color:var(--mute)}
+.pj h3{font:700 1.02rem var(--hd);letter-spacing:.08em}
+.pj p{color:#aaa;font-size:.9rem}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 10px}
+.tags span{font:500 .72rem var(--bd);padding:4px 11px;border:1px solid var(--line);border-radius:20px;color:#ccc}
+.pj .btn{margin-top:auto;padding:12px 20px}
+/* ===== SERVICES ===== */
+.sv{padding:28px;display:flex;flex-direction:column}
+.sv .ib{width:52px;height:52px;font-size:25px}
+.sv p{flex:1;margin-bottom:20px}
+.sv .btn{padding:11px 20px;align-self:flex-start}
+/* ===== CONTACT ===== */
+.ct{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px}
+.cc{display:flex;gap:16px;align-items:center;padding:22px 24px;overflow:hidden}
+.cc .ib{margin:0;flex:none;font-size:26px;width:54px;height:54px}
+.cc::before{content:"";position:absolute;top:0;left:-120%;width:60%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.18),transparent);transform:skewX(-20deg);transition:left .7s}
+.cc:hover::before{left:140%}
+.cc b{display:block;font:700 .82rem var(--hd);letter-spacing:.14em}
+.cc span{color:var(--mute);font-size:.85rem;word-break:break-all}
+.cc.empty{opacity:.6}
+/* ===== FOOTER ===== */
+footer{text-align:center;padding:70px 20px 40px;border-top:1px solid var(--line);background:linear-gradient(transparent,rgba(0,0,0,.7))}
+footer h2{font:800 clamp(1.5rem,5vw,2.4rem);letter-spacing:.2em;background:var(--silver);-webkit-background-clip:text;background-clip:text;color:transparent}
+footer .q{margin:12px 0 6px;font:300 italic 1rem var(--hd);letter-spacing:.1em;color:#ddd}
+footer .r{font:600 .68rem var(--hd);letter-spacing:.26em;color:var(--mute)}
+.soc{display:flex;justify-content:center;gap:12px;margin:28px 0;flex-wrap:wrap}
+.soc a{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;font-size:20px;border:1px solid var(--line);transition:.3s;background:var(--glass)}
+.soc a:hover{background:#fff;color:#000;box-shadow:0 0 24px rgba(255,255,255,.6);transform:translateY(-4px)}
+.copy{font-size:.74rem;letter-spacing:.14em;color:#777}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}html{scroll-behavior:auto}}
+</style>
 </head>
-<body>
+<body class="lock">
 
-    <!-- CUSTOM DESKTOP CURSOR -->
-    <div class="cursor-dot" id="cursor-dot"></div>
-    <div class="cursor-ring" id="cursor-ring"></div>
+<!-- SVG SPRITE -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+<symbol id="i-web" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 9h18M8 21h8M12 18v3M7.5 13l-1.5 1.5L7.5 16M11 16l1.5-1.5L11 13"/></symbol>
+<symbol id="i-app" viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2.5"/><path d="M11 18h2M10 6l-1.5 1.5L10 9M14 6l1.5 1.5L14 9"/></symbol>
+<symbol id="i-biz" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 13h18M12 12v2"/></symbol>
+<symbol id="i-btc" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 7.5v9M9.5 7.5h3.2a2.2 2.2 0 0 1 0 4.4H9.5m3.4 0a2.3 2.3 0 0 1 0 4.6H9.5M11 6v1.5M11 16.5V18M13.5 6v1.5M13.5 16.5V18"/></symbol>
+<symbol id="i-ux" viewBox="0 0 24 24"><path d="M12 3l2.4 5.2L20 9l-4 4 1 5.7L12 16l-5 2.7 1-5.7-4-4 5.6-.8z"/></symbol>
+<symbol id="i-res" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M21 21l-5.2-5.2M8 12.5l2-2 1.5 1.5L14 9"/></symbol>
+<symbol id="i-money" viewBox="0 0 24 24"><rect x="2.5" y="6" width="19" height="12" rx="2"/><circle cx="12" cy="12" r="2.8"/><path d="M6 9.5v.01M18 14.5v.01"/></symbol>
+<symbol id="i-page" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M4 8h16M8 12h8M8 16h5"/></symbol>
+<symbol id="i-cart" viewBox="0 0 24 24"><path d="M3 4h2.5l2 11h10l2-8H7"/><circle cx="9" cy="19.5" r="1.4"/><circle cx="17" cy="19.5" r="1.4"/></symbol>
+<symbol id="i-cog" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M18.7 5.3l-2.1 2.1M7.4 16.6l-2.1 2.1"/></symbol>
+<symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9.5h8M8 12.5h5"/></symbol>
+<symbol id="s-wa" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></symbol>
+<symbol id="s-ig" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5.2" fill="none" stroke="currentColor" stroke-width="1.9"/><circle cx="12" cy="12" r="4.1" fill="none" stroke="currentColor" stroke-width="1.9"/><circle cx="17.4" cy="6.6" r="1.2"/></symbol>
+<symbol id="s-tt" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></symbol>
+<symbol id="s-gh" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></symbol>
+<symbol id="s-tg" viewBox="0 0 24 24"><path d="M21.6 3.4 2.9 10.6c-.9.4-.9 1.1 0 1.4l4.8 1.5 1.8 5.6c.2.6.5.7 1 .3l2.6-2.1 4.9 3.6c.9.5 1.5.2 1.7-.9L23 4.8c.3-1.3-.5-1.9-1.4-1.4zM8.7 13.1l9.5-6-7.3 7.2-.3 3.3z" fill-rule="evenodd"/></symbol>
+<symbol id="s-ml" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m3.5 7 8.5 6.5L20.5 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs>
+</svg>
 
-    <!-- BACKGROUND ANIMATED CANVAS -->
-    <canvas id="bg-canvas"></canvas>
+<!-- LIVING SPACE BACKGROUND (persistent across all sections) -->
+<div class="galaxy"></div>
+<div class="neb"><i></i><i></i><i></i></div>
+<canvas id="space"></canvas>
 
-    <!-- LOADING SCREEN (3-4 SECONDS AUTOMATIC) -->
-    <div id="loading-screen">
-        <div class="loader-content">
-            <div class="loader-3d-logo">
-                <div class="logo-cube-face">MA</div>
-                <div class="logo-cube-face">WEB</div>
-                <div class="logo-cube-face">UI</div>
-                <div class="logo-cube-face">3D</div>
-                <div class="logo-cube-face">DEV</div>
-                <div class="logo-cube-face">SYS</div>
-            </div>
-            <div class="loader-title">WELCOME — DIGITAL PORTFOLIO MUZI ADRIYAN</div>
-            <div class="loader-progress-wrap">
-                <div class="loader-progress-bar" id="progress-bar"></div>
-            </div>
-            <div class="loader-percentage" id="progress-percentage">0%</div>
-        </div>
+<!-- LOADER -->
+<div id="loader" aria-label="Loading">
+  <div class="lplanet"></div>
+  <div class="l-top">WELCOME TO MY DIGITAL UNIVERSE</div>
+  <div class="logo">
+    <svg viewBox="0 0 150 150" aria-hidden="true">
+      <circle cx="75" cy="75" r="62" fill="none" stroke="rgba(255,255,255,.25)" stroke-dasharray="2 6"/>
+      <circle cx="75" cy="75" r="48" fill="none" stroke="rgba(255,255,255,.18)"/>
+      <g class="orb"><circle cx="75" cy="13" r="5" fill="#fff"/><circle cx="75" cy="13" r="10" fill="rgba(255,255,255,.18)"/></g>
+      <g class="orb2"><circle cx="75" cy="27" r="3" fill="#cfcfcf"/><path d="M123 75a48 48 0 0 0-48-48" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1.5" stroke-linecap="round"/></g>
+    </svg>
+    <b>MA</b>
+  </div>
+  <div class="l-name">MUZI ADRIYAN</div>
+  <div class="l-sub">"Explore My Digital World."</div>
+  <div class="bar"><span id="pbar"></span></div>
+  <div class="pct" id="pct">0%</div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="#home" class="brand">MUZI ADRIYAN</a>
+  <button class="burger" id="burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  <ul class="menu" id="menu">
+    <li><a href="#home">HOME</a></li><li><a href="#about">ABOUT</a></li><li><a href="#skills">SKILLS</a></li><li><a href="#projects">PROJECTS</a></li><li><a href="#income">INCOME</a></li><li><a href="#services">SERVICES</a></li><li><a href="#contact">CONTACT</a></li>
+  </ul>
+</nav>
+
+<main>
+<!-- HERO -->
+<section id="home"><div class="wrap hero">
+  <div>
+    <div class="role rv">WEB DEVELOPER | DIGITAL CREATOR | TECHNOLOGY ENTHUSIAST</div>
+    <h1 class="rv" style="--d:.1s">MUZI<br>ADRIYAN</h1>
+    <p class="head rv" style="--d:.2s">BUILDING DIGITAL IDEAS INTO REAL EXPERIENCES.</p>
+    <p class="desc rv" style="--d:.3s">Saya adalah seorang Web Developer, Digital Creator, dan Technology Enthusiast yang berfokus pada pengembangan teknologi digital, website interaktif, aplikasi digital, serta solusi bisnis berbasis teknologi.</p>
+    <p class="desc rv" style="--d:.35s">Dengan menggabungkan kreativitas, kemampuan teknis, dan pemahaman bisnis, saya berusaha membangun produk digital yang modern, inovatif, dan memiliki nilai guna.</p>
+    <div class="cta rv" style="--d:.45s"><a class="btn" href="#projects">Explore My Projects</a><a class="btn ghost" href="#contact">Contact Me</a></div>
+  </div>
+  <div class="photo rv" style="--d:.2s">
+    <div class="avatar"><div><span class="fb">MA</span><img src="A0F75A80-350A-4921-96D5-6DB57F4E6A7C.png" alt="Muzi Adriyan" onerror="this.style.display='none'"></div></div>
+  </div>
+</div></section>
+
+<!-- ABOUT -->
+<section id="about"><div class="wrap">
+  <h2 class="title rv">ABOUT ME</h2><div class="ln"></div>
+  <div class="about">
+    <div class="card tilt rv"><i class="gl"></i>
+      <p>Muzi Adriyan merupakan seorang praktisi teknologi digital yang memiliki ketertarikan pada pengembangan website, aplikasi digital, analisis pasar, dan pengembangan bisnis berbasis internet.</p>
+      <p>Fokus utama saya adalah mengubah ide menjadi produk digital yang memiliki tampilan profesional, pengalaman pengguna yang baik, serta fungsi yang bermanfaat.</p>
     </div>
-
-    <!-- NAVIGATION BAR -->
-    <header id="header">
-        <div class="nav-container">
-            <a href="#home" class="logo">MUZI <span>ADRIYAN</span></a>
-            <ul class="nav-menu">
-                <li><a href="#home" class="nav-link active">Home</a></li>
-                <li><a href="#about" class="nav-link">About</a></li>
-                <li><a href="#expertise" class="nav-link">Expertise</a></li>
-                <li><a href="#income" class="nav-link">Income</a></li>
-                <li><a href="#projects" class="nav-link">Projects</a></li>
-                <li><a href="#services" class="nav-link">Services</a></li>
-                <li><a href="#contact" class="nav-link">Contact</a></li>
-            </ul>
-            <button class="hamburger" id="hamburger" aria-label="Toggle Menu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </div>
-    </header>
-
-    <!-- MOBILE NAVIGATION OVERLAY -->
-    <div class="mobile-menu" id="mobile-menu">
-        <ul>
-            <li><a href="#home" class="mobile-nav-link">Home</a></li>
-            <li><a href="#about" class="mobile-nav-link">About</a></li>
-            <li><a href="#expertise" class="mobile-nav-link">Expertise</a></li>
-            <li><a href="#income" class="mobile-nav-link">Income</a></li>
-            <li><a href="#projects" class="mobile-nav-link">Projects</a></li>
-            <li><a href="#services" class="mobile-nav-link">Services</a></li>
-            <li><a href="#contact" class="mobile-nav-link">Contact</a></li>
-        </ul>
+    <div class="card tilt rv" style="--d:.15s"><i class="gl"></i>
+      <ul class="info">
+        <li><small>NAME</small><span>Muzi Adriyan</span></li>
+        <li><small>PROFESSION</small><span>Web Developer &amp; Digital Creator</span></li>
+        <li><small>SPECIALIZATION</small><span>Digital Technology</span></li>
+        <li><small>INTEREST</small><span>Business, Technology &amp; Financial Markets</span></li>
+        <li><small>LOCATION</small><span>Bekasi, Indonesia</span></li>
+      </ul>
     </div>
+  </div>
+</div></section>
 
-    <!-- MAIN CONTENT -->
-    <main>
+<!-- SKILLS -->
+<section id="skills"><div class="wrap">
+  <h2 class="title rv">MY SPECIALIZATION</h2><div class="ln"></div>
+  <div class="grid">
+    <div class="card tilt sk rv"><i class="gl"></i><span class="no">01</span><div class="ib"><svg class="ico"><use href="#i-web"/></svg></div><h3>WEB DEVELOPMENT</h3><p>Pengembangan website modern, responsif, interaktif, dan user-friendly untuk kebutuhan personal, bisnis, dan perusahaan.</p></div>
+    <div class="card tilt sk rv" style="--d:.08s"><i class="gl"></i><span class="no">02</span><div class="ib"><svg class="ico"><use href="#i-app"/></svg></div><h3>APP DEVELOPMENT</h3><p>Perancangan aplikasi Android dan solusi digital berbasis teknologi.</p></div>
+    <div class="card tilt sk rv" style="--d:.16s"><i class="gl"></i><span class="no">03</span><div class="ib"><svg class="ico"><use href="#i-biz"/></svg></div><h3>DIGITAL BUSINESS &amp; TECHNOLOGY</h3><p>Pengembangan platform digital, otomatisasi bisnis, serta solusi teknologi untuk kebutuhan usaha.</p></div>
+    <div class="card tilt sk rv"><i class="gl"></i><span class="no">04</span><div class="ib"><svg class="ico"><use href="#i-btc"/></svg></div><h3>CRYPTOCURRENCY &amp; MARKET ANALYSIS</h3><p>Analisis pergerakan pasar cryptocurrency, Bitcoin, dan aset digital lainnya.</p></div>
+    <div class="card tilt sk rv" style="--d:.08s"><i class="gl"></i><span class="no">05</span><div class="ib"><svg class="ico"><use href="#i-ux"/></svg></div><h3>UI/UX DESIGN</h3><p>Menciptakan desain antarmuka modern dengan memperhatikan kenyamanan dan pengalaman pengguna.</p></div>
+    <div class="card tilt sk rv" style="--d:.16s"><i class="gl"></i><span class="no">06</span><div class="ib"><svg class="ico"><use href="#i-res"/></svg></div><h3>FINANCIAL &amp; MARKET RESEARCH</h3><p>Riset pasar, analisis tren, dan pemahaman ekosistem finansial digital.</p></div>
+  </div>
+</div></section>
 
-        <!-- HERO SECTION -->
-        <section id="home" class="hero-section">
-            <div class="container">
-                <div class="hero-grid">
-                    <div class="hero-content">
-                        <div class="hero-badge">
-                            <span class="status-dot"></span>
-                            Available For Digital Projects & Innovations
-                        </div>
-                        <h1 class="hero-title">MUZI ADRIYAN</h1>
-                        <div class="hero-roles">
-                            <span id="typing-text"></span><span class="typing-cursor"></span>
-                        </div>
-                        <div class="hero-headline-quote">"Building Digital Experiences Through Technology & Innovation."</div>
-                        <p class="hero-bio">
-                            Saya adalah seorang pengembang digital yang berfokus pada pengembangan website interaktif, aplikasi digital, teknologi modern, serta analisis pasar aset digital. Saya menggabungkan kreativitas, teknologi, dan pemikiran bisnis untuk menciptakan solusi digital yang modern dan bermanfaat.
-                        </p>
-                        <div class="hero-buttons">
-                            <a href="#projects" class="btn btn-primary">
-                                Lihat Proyek
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14m-7-7l7 7-7 7"/></svg>
-                            </a>
-                            <a href="#contact" class="btn btn-secondary">
-                                Hubungi Saya
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="hero-visual">
-                        <div class="profile-card-3d" id="profile-3d-card">
-                            <div class="profile-floating-tag tag-1">
-                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-                                WEB DEVELOPER
-                            </div>
-                            <div class="profile-floating-tag tag-2">
-                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                                MARKET ANALYST
-                            </div>
-                            <div class="profile-img-wrap">
-                                <img src="A0F75A80-350A-4921-96D5-6DB57F4E6A7C.png" alt="Muzi Adriyan">
-                            </div>
-                            <div class="profile-card-info">
-                                <div class="profile-card-name">Muzi Adriyan</div>
-                                <div class="profile-card-tag">Digital Creator & Tech Enthusiast</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+<!-- PROJECTS -->
+<section id="projects"><div class="wrap">
+  <h2 class="title rv">SELECTED DIGITAL PROJECTS</h2><div class="ln"></div>
+  <div class="grid" id="pgrid"></div>
+</div></section>
 
-        <!-- ABOUT ME SECTION -->
-        <section id="about" class="about-section">
-            <div class="container">
-                <div class="section-header">
-                    <span class="section-tag">Background</span>
-                    <h2 class="section-title">About Me</h2>
-                    <p class="section-desc">Mengenal lebih dekat visi, fokus utama, dan perjalanan profesional saya.</p>
-                </div>
-                <div class="about-grid">
-                    <div class="about-content-box">
-                        <h3>Mengubah Ide Menjadi Pengalaman Digital</h3>
-                        <p>
-                            Muzi Adriyan merupakan seorang Web Developer, Digital Creator, dan Technology Enthusiast yang memiliki ketertarikan pada perkembangan teknologi digital dan dunia bisnis.
-                        </p>
-                        <p>
-                            Fokus utama saya adalah mengembangkan produk digital yang menggabungkan desain modern, pengalaman pengguna, dan fungsionalitas. Saya memiliki minat dalam pengembangan website, aplikasi Android, sistem digital, teknologi finansial, serta analisis pasar cryptocurrency.
-                        </p>
-                        <div class="about-philosophy">
-                            "Turning Ideas Into Digital Experiences."
-                        </div>
-                    </div>
-                    <div class="about-stats-grid">
-                        <div class="about-stat-card">
-                            <div class="about-stat-num" data-target="5">0</div>
-                            <div class="about-stat-lbl">Live Projects</div>
-                        </div>
-                        <div class="about-stat-card">
-                            <div class="about-stat-num" data-target="4">0</div>
-                            <div class="about-stat-lbl">Core Expertise</div>
-                        </div>
-                        <div class="about-stat-card">
-                            <div class="about-stat-num" data-target="100">0</div>
-                            <div class="about-stat-lbl">Commitment %</div>
-                        </div>
-                        <div class="about-stat-card">
-                            <div class="about-stat-num" data-target="24">0</div>
-                            <div class="about-stat-lbl">Support Hours</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+<!-- INCOME -->
+<section id="income"><div class="wrap">
+  <h2 class="title rv">INCOME &amp; DIGITAL BUSINESS</h2><div class="ln"></div>
+  <div class="card tilt inc rv"><i class="gl"></i>
+    <div class="ib"><svg class="ico"><use href="#i-money"/></svg></div>
+    <h3>MY MONTHLY INCOME</h3>
+    <div class="num" id="num" aria-label="Rp13.000.000 sampai Rp15.000.000">Rp13.000.000 – Rp15.000.000</div>
+    <div class="lab">TWO-DIGIT MONTHLY INCOME</div>
+    <p>"Pendapatan bulanan dari aktivitas bisnis digital, pengembangan teknologi, dan berbagai peluang usaha."</p>
+  </div>
+</div></section>
 
-        <!-- EXPERTISE SECTION -->
-        <section id="expertise" class="expertise-section">
-            <div class="container">
-                <div class="section-header">
-                    <span class="section-tag">Competencies</span>
-                    <h2 class="section-title">Bidang Keahlian</h2>
-                    <p class="section-desc">Keahlian komprehensif dalam pengembangan teknis, strategi bisnis, dan analisis pasar.</p>
-                </div>
-                <div class="expertise-grid">
-                    <!-- Expertise 1 -->
-                    <div class="expertise-card">
-                        <div class="expertise-icon-box">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-                        </div>
-                        <h3>Web Development</h3>
-                        <ul class="expertise-list">
-                            <li>HTML5 Modern Architecture</li>
-                            <li>Advanced CSS3 Styling</li>
-                            <li>Vanilla JavaScript (ES6+)</li>
-                            <li>Responsive Website Design</li>
-                            <li>UI/UX Design Principles</li>
-                        </ul>
-                    </div>
-                    <!-- Expertise 2 -->
-                    <div class="expertise-card">
-                        <div class="expertise-icon-box">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
-                        </div>
-                        <h3>App Development</h3>
-                        <ul class="expertise-list">
-                            <li>Android Application</li>
-                            <li>APK Development & Build</li>
-                            <li>Digital Application Systems</li>
-                            <li>Custom Digital Solutions</li>
-                        </ul>
-                    </div>
-                    <!-- Expertise 3 -->
-                    <div class="expertise-card">
-                        <div class="expertise-icon-box">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
-                        </div>
-                        <h3>Digital Business & Tech</h3>
-                        <ul class="expertise-list">
-                            <li>Digital Business Strategy</li>
-                            <li>Website Business Solutions</li>
-                            <li>Digital Transformation</li>
-                            <li>Business Automation</li>
-                        </ul>
-                    </div>
-                    <!-- Expertise 4 -->
-                    <div class="expertise-card">
-                        <div class="expertise-icon-box">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                        </div>
-                        <h3>Cryptocurrency & Market</h3>
-                        <ul class="expertise-list">
-                            <li>Bitcoin Analysis & Insights</li>
-                            <li>Crypto Market Research</li>
-                            <li>Technical Analysis & Trends</li>
-                            <li>Market Trend Analysis</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
+<!-- SERVICES -->
+<section id="services"><div class="wrap">
+  <h2 class="title rv">WHAT I CAN DO FOR YOU</h2><div class="ln"></div>
+  <div class="grid" id="sgrid"></div>
+</div></section>
 
-        <!-- STATISTICS & MONTHLY INCOME SECTION -->
-        <section id="income" class="income-section">
-            <div class="container">
-                <div class="section-header">
-                    <span class="section-tag">Verified Achievement</span>
-                    <h2 class="section-title">Statistics & Performance</h2>
-                    <p class="section-desc">Transparansi pencapaian finansial aktual dari hasil pengembangan digital dan bisnis profesional.</p>
-                </div>
-                <div class="income-dashboard-box">
-                    <div class="income-grid">
-                        <div class="income-info-col">
-                            <div class="income-badge-top">Monthly Milestone</div>
-                            <h3 class="income-main-title">MONTHLY INCOME</h3>
-                            <div class="income-card-display">
-                                <div class="income-amount-text">Rp13.000.000 – Rp15.000.000</div>
-                                <div class="income-sub-desc">Potensi pendapatan dua digit per bulan melalui ekosistem digital business, layanan web development profesional, dan investasi strategis.</div>
-                            </div>
-                            <div class="income-features-list">
-                                <div class="income-feature-item">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                                    Two Digit Monthly Income Growth
-                                </div>
-                                <div class="income-feature-item">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                                    Sustainable Digital Business & Investment
-                                </div>
-                                <div class="income-feature-item">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                                    Professional Financial Management
-                                </div>
-                            </div>
-                        </div>
-                        <div class="income-chart-col">
-                            <div class="income-chart-card">
-                                <div class="chart-header-row">
-                                    <div class="chart-title-text">Financial Growth Trend</div>
-                                    <div class="chart-tag-growth">+18.5% YoY</div>
-                                </div>
-                                <div class="chart-bars-container">
-                                    <div class="chart-bar-column">
-                                        <div class="chart-bar-fill" style="height: 48%;"></div>
-                                        <div class="chart-bar-label">Q1</div>
-                                    </div>
-                                    <div class="chart-bar-column">
-                                        <div class="chart-bar-fill" style="height: 62%;"></div>
-                                        <div class="chart-bar-label">Q2</div>
-                                    </div>
-                                    <div class="chart-bar-column">
-                                        <div class="chart-bar-fill" style="height: 78%;"></div>
-                                        <div class="chart-bar-label">Q3</div>
-                                    </div>
-                                    <div class="chart-bar-column">
-                                        <div class="chart-bar-fill" style="height: 94%;"></div>
-                                        <div class="chart-bar-label">Q4</div>
-                                    </div>
-                                </div>
-                                <div style="margin-top: 15px; font-size: 12px; color: var(--text-secondary); text-align: center;">
-                                    Statistik pendapatan stabil berdasarkan performa riil.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+<!-- CONTACT -->
+<section id="contact"><div class="wrap">
+  <h2 class="title rv">SOCIAL MEDIA &amp; CONTACT</h2><div class="ln"></div>
+  <div class="ct" id="cgrid"></div>
+</div></section>
+</main>
 
-        <!-- PROJECT PORTFOLIO SECTION -->
-        <section id="projects" class="projects-section">
-            <div class="container">
-                <div class="section-header">
-                    <span class="section-tag">Portfolio</span>
-                    <h2 class="section-title">Featured Projects</h2>
-                    <p class="section-desc">Koleksi lima proyek website profesional yang telah dikembangkan dan aktif dikunjungi.</p>
-                </div>
-                <div class="projects-grid">
-                    <!-- Project 01 -->
-                    <div class="project-card">
-                        <div class="project-thumbnail">
-                            <div class="project-thumbnail-bg"></div>
-                            <div class="project-thumbnail-content">
-                                <div class="project-thumb-icon">
-                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                                </div>
-                                <div class="project-thumb-title">Crypto Market</div>
-                            </div>
-                        </div>
-                        <div class="project-body">
-                            <span class="project-status">● Live Production</span>
-                            <h3 class="project-title">Crypto Live Market</h3>
-                            <p class="project-desc">Platform pemantauan harga cryptocurrency, market cap, volume perdagangan, dan pergerakan aset digital.</p>
-                            <div class="project-tech-tags">
-                                <span class="project-tech-tag">HTML5</span>
-                                <span class="project-tech-tag">CSS3</span>
-                                <span class="project-tech-tag">JavaScript</span>
-                                <span class="project-tech-tag">Crypto API</span>
-                            </div>
-                            <a href="https://muzi4you.github.io/Crypto-/" target="_blank" rel="noopener noreferrer" class="project-visit-btn">
-                                VISIT PROJECT
-                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                            </a>
-                        </div>
-                    </div>
+<footer>
+  <h2>MUZI ADRIYAN</h2>
+  <p class="q">"BUILDING THE FUTURE THROUGH DIGITAL INNOVATION."</p>
+  <p class="r">WEB DEVELOPER | DIGITAL CREATOR | TECHNOLOGY ENTHUSIAST</p>
+  <div class="soc" id="fsoc"></div>
+  <p class="copy">© 2026 MUZI ADRIYAN. ALL RIGHTS RESERVED.</p>
+</footer>
 
-                    <!-- Project 02 -->
-                    <div class="project-card">
-                        <div class="project-thumbnail">
-                            <div class="project-thumbnail-bg"></div>
-                            <div class="project-thumbnail-content">
-                                <div class="project-thumb-icon">
-                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-                                </div>
-                                <div class="project-thumb-title">Dashboard UI</div>
-                            </div>
-                        </div>
-                        <div class="project-body">
-                            <span class="project-status">● Live Production</span>
-                            <h3 class="project-title">Digital Dashboard</h3>
-                            <p class="project-desc">Dashboard digital untuk menampilkan informasi, data, dan sistem monitoring dengan tampilan modern.</p>
-                            <div class="project-tech-tags">
-                                <span class="project-tech-tag">HTML5</span>
-                                <span class="project-tech-tag">CSS3</span>
-                                <span class="project-tech-tag">JavaScript</span>
-                                <span class="project-tech-tag">Dashboard UI</span>
-                            </div>
-                            <a href="https://zii4you.github.io/DASHBOARD-MUZI-ADRIYAN/" target="_blank" rel="noopener noreferrer" class="project-visit-btn">
-                                VISIT PROJECT
-                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                            </a>
-                        </div>
-                    </div>
+<script>
+(function(){
+"use strict";
+/* ============ EDIT DATA DI SINI ============ */
+var CONFIG={
+  tiktok:{user:"",url:""},          // contoh: user:"@username", url:"https://www.tiktok.com/@username"
+  telegram:{user:"",url:""},        // contoh: user:"@username", url:"https://t.me/username"
+  email:{addr:""}                   // contoh: addr:"nama@email.com"
+};
+var WA="6285778264944";
+var PROJECTS=[
+ {n:"CRYPTO LIVE MARKET",d:"Website informasi cryptocurrency dan market monitoring.",u:"https://muzi4you.github.io/Crypto-/"},
+ {n:"DIGITAL DASHBOARD",d:"Dashboard digital untuk menampilkan informasi dan pengelolaan data.",u:"https://zii4you.github.io/DASHBOARD-MUZI-ADRIYAN/"},
+ {n:"DIGITAL BUSINESS PLATFORM",d:"Platform layanan dan kebutuhan bisnis digital.",u:"https://zii4you.github.io/Akses-digital-by-zyy"},
+ {n:"DIGITAL NEWS PORTAL",d:"Website informasi dan publikasi berita digital.",u:"https://muziadriyan.github.io/Berita-zyy/"},
+ {n:"PERSONAL PORTFOLIO",d:"Website personal branding dan dokumentasi karya digital.",u:"https://zii4you.github.io/Portofolio-Muzi-Adriyan-/"}
+];
+var STACK=["HTML","CSS","JavaScript"]; // ubah sesuai teknologi proyek
+var SERVICES=[
+ ["i-web","Professional Website Development","Website profesional, cepat, dan responsif untuk personal maupun perusahaan."],
+ ["i-biz","Business Website","Website bisnis yang membangun kepercayaan dan memudahkan pelanggan menghubungi Anda."],
+ ["i-page","Landing Page Development","Landing page fokus konversi untuk produk, promosi, atau kampanye."],
+ ["i-cart","E-Commerce Website","Toko online dengan tampilan menarik dan alur belanja yang mudah."],
+ ["i-cog","Custom Digital Application","Aplikasi digital sesuai kebutuhan dan proses kerja usaha Anda."],
+ ["i-ux","UI/UX Design","Desain antarmuka modern yang nyaman dan mudah digunakan."],
+ ["i-chat","Digital Technology Consultation","Konsultasi teknologi digital untuk menentukan solusi yang tepat."]
+];
+var $=function(s,c){return(c||document).querySelector(s)};
+var $$=function(s,c){return[].slice.call((c||document).querySelectorAll(s))};
+var reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+var fine=window.matchMedia("(hover:hover) and (pointer:fine)").matches;
+var mobile=Math.min(innerWidth,innerHeight)<700||!fine;
 
-                    <!-- Project 03 -->
-                    <div class="project-card">
-                        <div class="project-thumbnail">
-                            <div class="project-thumbnail-bg"></div>
-                            <div class="project-thumbnail-content">
-                                <div class="project-thumb-icon">
-                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
-                                </div>
-                                <div class="project-thumb-title">Business Platform</div>
-                            </div>
-                        </div>
-                        <div class="project-body">
-                            <span class="project-status">● Live Production</span>
-                            <h3 class="project-title">Digital Business Platform</h3>
-                            <p class="project-desc">Platform layanan digital dan solusi kebutuhan bisnis berbasis website.</p>
-                            <div class="project-tech-tags">
-                                <span class="project-tech-tag">HTML5</span>
-                                <span class="project-tech-tag">CSS3</span>
-                                <span class="project-tech-tag">JavaScript</span>
-                                <span class="project-tech-tag">Business Portal</span>
-                            </div>
-                            <a href="https://zii4you.github.io/Akses-digital-by-zyy" target="_blank" rel="noopener noreferrer" class="project-visit-btn">
-                                VISIT PROJECT
-                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                            </a>
-                        </div>
-                    </div>
+/* ============ BUILD CONTENT ============ */
+var pg=$("#pgrid");
+PROJECTS.forEach(function(p,i){
+  var host=p.u.replace(/^https?:\/\//,"").replace(/\/$/,"");
+  var el=document.createElement("article");
+  el.className="card tilt pj rv";el.style.setProperty("--d",(i%3)*.08+"s");
+  el.innerHTML='<i class="gl"></i><div class="thumb"><svg viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="320" height="200" fill="#070707"/><rect x="0" y="0" width="320" height="22" fill="#141414"/><circle cx="12" cy="11" r="3" fill="#555"/><circle cx="24" cy="11" r="3" fill="#555"/><circle cx="36" cy="11" r="3" fill="#555"/><text x="160" y="106" text-anchor="middle" fill="#bbb" font-size="11" font-family="sans-serif" letter-spacing="2">LIVE PREVIEW</text><text x="160" y="124" text-anchor="middle" fill="#666" font-size="8" font-family="sans-serif">'+host+'</text></svg></div><div class="bd"><small>PROJECT 0'+(i+1)+'</small><h3></h3><p></p><div class="tags"></div><a class="btn" target="_blank" rel="noopener noreferrer">VIEW PROJECT</a></div>';
+  $("h3",el).textContent=p.n;$("p",el).textContent=p.d;
+  STACK.forEach(function(s){var t=document.createElement("span");t.textContent=s;$(".tags",el).appendChild(t)});
+  var a=$("a",el);a.href=p.u;a.setAttribute("aria-label","View project "+p.n);
+  el.dataset.src=p.u;pg.appendChild(el);
+});
+var sg=$("#sgrid");
+SERVICES.forEach(function(s,i){
+  var el=document.createElement("article");
+  el.className="card tilt sv rv";el.style.setProperty("--d",(i%3)*.08+"s");
+  el.innerHTML='<i class="gl"></i><div class="ib"><svg class="ico"><use href="#'+s[0]+'"/></svg></div><h3></h3><p></p><a class="btn" target="_blank" rel="noopener noreferrer">ORDER NOW</a>';
+  $("h3",el).textContent=s[1];$("p",el).textContent=s[2];
+  $("a",el).href="https://wa.me/"+WA+"?text="+encodeURIComponent("Halo Muzi, saya ingin memesan layanan: "+s[1]);
+  sg.appendChild(el);
+});
+var T=CONFIG.tiktok,G=CONFIG.telegram,M=CONFIG.email;
+var SOCIALS=[
+ {k:"WhatsApp Business",v:"085778264944",h:"https://wa.me/6285778264944",i:"s-wa",f:1},
+ {k:"WhatsApp Admin",v:"0855692174059",h:"https://wa.me/62855692174059",i:"s-wa",f:1},
+ {k:"Instagram",v:"@zzyyadryn_",h:"https://instagram.com/zzyyadryn_",i:"s-ig",f:1},
+ {k:"TikTok",v:T.user||"Isi username di CONFIG",h:T.url,i:"s-tt",f:1},
+ {k:"GitHub",v:"github.com/muziadriyan",h:"https://github.com/muziadriyan",i:"s-gh",f:1},
+ {k:"Telegram",v:G.user||"Isi link di CONFIG",h:G.url,i:"s-tg",f:1},
+ {k:"Email",v:M.addr||"Isi email di CONFIG",h:M.addr?"mailto:"+M.addr:"",i:"s-ml",f:0}
+];
+var cg=$("#cgrid"),fs=$("#fsoc");
+SOCIALS.forEach(function(s,i){
+  var ok=!!s.h;
+  var a=document.createElement("a");
+  a.className="card tilt cc rv"+(ok?"":" empty");a.style.setProperty("--d",(i%3)*.08+"s");
+  a.innerHTML='<i class="gl"></i><div class="ib"><svg class="ico'+(s.f?" f":"")+'"><use href="#'+s.i+'"/></svg></div><div><b></b><span></span></div>';
+  $("b",a).textContent=s.k.toUpperCase();$("span",a).textContent=s.v;
+  if(ok){a.href=s.h;if(s.h.indexOf("http")===0){a.target="_blank";a.rel="noopener noreferrer"}}else{a.href="#contact";a.addEventListener("click",function(e){e.preventDefault()})}
+  cg.appendChild(a);
+  if(ok&&!(i===1)){var f=document.createElement("a");f.href=s.h;f.setAttribute("aria-label",s.k);if(s.h.indexOf("http")===0){f.target="_blank";f.rel="noopener noreferrer"}
+    f.innerHTML='<svg class="ico'+(s.f?" f":"")+'"><use href="#'+s.i+'"/></svg>';fs.appendChild(f)}
+});
 
-                    <!-- Project 04 -->
-                    <div class="project-card">
-                        <div class="project-thumbnail">
-                            <div class="project-thumbnail-bg"></div>
-                            <div class="project-thumbnail-content">
-                                <div class="project-thumb-icon">
-                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 10h-5"/><path d="M18 18h-8"/></svg>
-                                </div>
-                                <div class="project-thumb-title">News Portal</div>
-                            </div>
-                        </div>
-                        <div class="project-body">
-                            <span class="project-status">● Live Production</span>
-                            <h3 class="project-title">Digital News</h3>
-                            <p class="project-desc">Website informasi dan publikasi berita digital dengan struktur halaman yang modern.</p>
-                            <div class="project-tech-tags">
-                                <span class="project-tech-tag">HTML5</span>
-                                <span class="project-tech-tag">CSS3</span>
-                                <span class="project-tech-tag">JavaScript</span>
-                                <span class="project-tech-tag">News Layout</span>
-                            </div>
-                            <a href="https://muziadriyan.github.io/Berita-zyy/" target="_blank" rel="noopener noreferrer" class="project-visit-btn">
-                                VISIT PROJECT
-                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                            </a>
-                        </div>
-                    </div>
+/* ============ SPACE ENGINE (one canvas, always running) ============ */
+var cv=$("#space"),cx=cv.getContext("2d");
+var W=0,H=0,dpr=Math.min(window.devicePixelRatio||1,mobile?1.25:1.6);
+var N=mobile?380:950,stars=[],meteors=[],speed=0.0045,target=0.0045,mx=0,my=0,tx=0,ty=0,scrollY=0,running=true;
+function rs(){W=innerWidth;H=innerHeight;cv.width=W*dpr;cv.height=H*dpr;cx.setTransform(dpr,0,0,dpr,0,0)}
+function mk(s,far){s.x=(Math.random()*2-1);s.y=(Math.random()*2-1);s.z=far?1:Math.random()*.98+.02;s.r=Math.random()*1.1+.25;s.t=Math.random()*6.28;s.k=Math.random()*1.8+.4;return s}
+for(var i=0;i<N;i++)stars.push(mk({}));
+var PL=[
+ {x:.82,y:.22,r:.075,p:.18,ring:0,s:0},
+ {x:.12,y:.7,r:.05,p:.3,ring:1,s:1.7},
+ {x:.62,y:.92,r:.11,p:.1,ring:0,s:3.1}
+];
+function planet(p,t){
+  var R=Math.min(W,H)*p.r*(mobile?1.1:1)*(1+p.r*0);
+  var x=p.x*W+Math.sin(t*.00007+p.s)*18-mx*p.p*40;
+  var y=((p.y*H-scrollY*p.p*.7)%(H*1.6)+H*1.6)%(H*1.6)-H*.3-my*p.p*40;
+  if(y<-R*2||y>H+R*2)return;
+  if(p.ring){cx.save();cx.translate(x,y);cx.rotate(-.35);cx.scale(1,.28);cx.strokeStyle="rgba(220,220,220,.35)";cx.lineWidth=R*.18;cx.beginPath();cx.arc(0,0,R*1.7,Math.PI,0);cx.stroke();cx.restore()}
+  cx.save();cx.beginPath();cx.arc(x,y,R,0,6.283);cx.clip();
+  var g=cx.createRadialGradient(x-R*.4,y-R*.4,R*.05,x,y,R*1.05);
+  g.addColorStop(0,"#f2f2f2");g.addColorStop(.35,"#9d9d9d");g.addColorStop(.75,"#2a2a2a");g.addColorStop(1,"#000");
+  cx.fillStyle=g;cx.fillRect(x-R,y-R,R*2,R*2);
+  cx.globalAlpha=.16;cx.fillStyle="#000";
+  var off=(t*.004*(p.s+1))%(R*2.4);
+  for(var b=-3;b<4;b++){var by=y+b*R*.28;cx.fillRect(x-R,by,R*2,R*.1)}
+  for(var c=0;c<4;c++){var cxp=x-R+((off+c*R*.62)%(R*2.4))-R*.2;cx.beginPath();cx.arc(cxp,y+Math.sin(c*2.1+p.s)*R*.45,R*.12+c*R*.015,0,6.283);cx.fill()}
+  cx.globalAlpha=1;
+  var sh=cx.createRadialGradient(x-R*.7,y-R*.7,R*.2,x,y,R*1.15);sh.addColorStop(0,"rgba(0,0,0,0)");sh.addColorStop(1,"rgba(0,0,0,.85)");cx.fillStyle=sh;cx.fillRect(x-R,y-R,R*2,R*2);
+  cx.restore();
+  cx.save();cx.shadowColor="rgba(255,255,255,.5)";cx.shadowBlur=R*.5;cx.strokeStyle="rgba(255,255,255,.18)";cx.beginPath();cx.arc(x,y,R,0,6.283);cx.stroke();cx.restore();
+  if(p.ring){cx.save();cx.translate(x,y);cx.rotate(-.35);cx.scale(1,.28);cx.strokeStyle="rgba(235,235,235,.5)";cx.lineWidth=R*.18;cx.beginPath();cx.arc(0,0,R*1.7,0,Math.PI);cx.stroke();cx.restore()}
+}
+function spawnMeteor(){
+  var a=Math.PI*(.62+Math.random()*.16),sp=(mobile?9:12)+Math.random()*8;
+  meteors.push({x:Math.random()*W*1.1,y:-30,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,l:90+Math.random()*90,life:1});
+}
+var lastM=0,last=0;
+function frame(t){
+  if(!running)return;
+  requestAnimationFrame(frame);
+  if(mobile&&t-last<33)return;last=t;
+  speed+=(target-speed)*.04;
+  tx+=(mx-tx)*.05;ty+=(my-ty)*.05;
+  cx.clearRect(0,0,W,H);
+  var cxm=W/2-tx*30,cym=H/2-ty*30,sc=Math.max(W,H)*.62,warp=speed>.02;
+  cx.lineCap="round";
+  for(var i=0;i<N;i++){
+    var s=stars[i],pz=s.z;
+    s.z-=speed*s.k*.6;
+    if(s.z<=.02){mk(s,true);continue}
+    var px=cxm+s.x/s.z*sc*.5,py=cym+s.y/s.z*sc*.5;
+    if(px<-20||px>W+20||py<-20||py>H+20){mk(s,true);continue}
+    var near=1-s.z,tw=.55+.45*Math.sin(t*.002*s.k+s.t);
+    var a=Math.min(1,(near*.9+.15))*tw,r=s.r*(.5+near*1.4);
+    if(warp){var qx=cxm+s.x/pz*sc*.5,qy=cym+s.y/pz*sc*.5;cx.strokeStyle="rgba(255,255,255,"+a.toFixed(2)+")";cx.lineWidth=r;cx.beginPath();cx.moveTo(qx,qy);cx.lineTo(px,py);cx.stroke()}
+    else{cx.fillStyle="rgba(255,255,255,"+a.toFixed(2)+")";cx.fillRect(px,py,r,r)}
+  }
+  for(var j=0;j<PL.length;j++)planet(PL[j],t);
+  if(t-lastM>(mobile?5200:3200)+Math.random()*2500&&meteors.length<3){lastM=t;spawnMeteor()}
+  for(var m=meteors.length-1;m>=0;m--){
+    var o=meteors[m];o.x+=o.vx;o.y+=o.vy;o.life-=.008;
+    var d=Math.hypot(o.vx,o.vy),ex=o.x-o.vx/d*o.l,ey=o.y-o.vy/d*o.l;
+    var g=cx.createLinearGradient(o.x,o.y,ex,ey);g.addColorStop(0,"rgba(255,255,255,"+o.life+")");g.addColorStop(1,"rgba(255,255,255,0)");
+    cx.strokeStyle=g;cx.lineWidth=1.8;cx.beginPath();cx.moveTo(o.x,o.y);cx.lineTo(ex,ey);cx.stroke();
+    if(o.y>H+120||o.x<-200||o.x>W+200||o.life<=0)meteors.splice(m,1);
+  }
+}
+rs();addEventListener("resize",rs);
+addEventListener("scroll",function(){scrollY=window.pageYOffset},{passive:true});
+if(fine)addEventListener("mousemove",function(e){mx=e.clientX/W-.5;my=e.clientY/H-.5},{passive:true});
+else addEventListener("deviceorientation",function(e){if(e.gamma!=null){mx=Math.max(-.5,Math.min(.5,e.gamma/60));my=Math.max(-.5,Math.min(.5,(e.beta-45)/90))}},{passive:true});
+document.addEventListener("visibilitychange",function(){if(document.hidden)running=false;else if(!running){running=true;requestAnimationFrame(frame)}});
+if(reduce){target=speed=.0006}
+target=.055;speed=.055; /* kecepatan warp saat loading */
+requestAnimationFrame(frame);
 
-                    <!-- Project 05 -->
-                    <div class="project-card">
-                        <div class="project-thumbnail">
-                            <div class="project-thumbnail-bg"></div>
-                            <div class="project-thumbnail-content">
-                                <div class="project-thumb-icon">
-                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                                </div>
-                                <div class="project-thumb-title">Fund Generator</div>
-                            </div>
-                        </div>
-                        <div class="project-body">
-                            <span class="project-status">● Live Production</span>
-                            <h3 class="project-title">Penghasil Dana</h3>
-                            <p class="project-desc">Proyek website digital untuk eksplorasi platform dan sistem berbasis web.</p>
-                            <div class="project-tech-tags">
-                                <span class="project-tech-tag">HTML5</span>
-                                <span class="project-tech-tag">CSS3</span>
-                                <span class="project-tech-tag">JavaScript</span>
-                                <span class="project-tech-tag">Web Tool</span>
-                            </div>
-                            <a href="https://muzi4you.github.io/Penghasil-dana-/" target="_blank" rel="noopener noreferrer" class="project-visit-btn">
-                                VISIT PROJECT
-                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+/* ============ LOADER 5 DETIK (otomatis, tanpa tombol) ============ */
+var DUR=5000,t0=performance.now(),bar=$("#pbar"),pct=$("#pct"),ld=$("#loader"),done=false;
+function tick(now){
+  var p=Math.min(1,(now-t0)/DUR),e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2*.0+(0);
+  var v=Math.round(p*100);bar.style.width=v+"%";pct.textContent=v+"%";
+  if(p>.7)target=.0045+(1-p)*.2;
+  if(p<1)requestAnimationFrame(tick);else finish();
+}
+function finish(){
+  if(done)return;done=true;target=.0045;
+  ld.classList.add("zoom");document.body.classList.remove("lock");document.body.classList.add("ready");
+  setTimeout(function(){ld.style.display="none";reveal()},950);
+}
+requestAnimationFrame(tick);
 
-        <!-- DIGITAL SERVICES SECTION -->
-        <section id="services" class="services-section">
-            <div class="container">
-                <div class="section-header">
-                    <span class="section-tag">Offerings</span>
-                    <h2 class="section-title">Digital Services</h2>
-                    <p class="section-desc">Solusi layanan profesional berkualitas tinggi untuk mendukung pengembangan produk digital Anda.</p>
-                </div>
-                <div class="services-grid">
-                    <div class="service-card">
-                        <div class="service-icon-box">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-                        </div>
-                        <h3>Professional Website Development</h3>
-                        <p>Pengembangan website profesional yang cepat, responsif, dan dioptimalkan untuk performa tinggi.</p>
-                    </div>
-                    <div class="service-card">
-                        <div class="service-icon-box">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg>
-                        </div>
-                        <h3>Landing Page Development</h3>
-                        <p>Pembuatan landing page konversi tinggi dengan desain futuristik dan pengalaman pengguna optimal.</p>
-                    </div>
-                    <div class="service-card">
-                        <div class="service-icon-box">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-                        </div>
-                        <h3>Personal & Business Portfolio</h3>
-                        <p>Portofolio elegan untuk menampilkan profil, karya, dan pencapaian profesional Anda kepada dunia.</p>
-                    </div>
-                    <div class="service-card">
-                        <div class="service-icon-box">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
-                        </div>
-                        <h3>Digital Application Development</h3>
-                        <p>Pembuatan aplikasi mobile Android dan file APK fungsional sesuai kebutuhan spesifik Anda.</p>
-                    </div>
-                    <div class="service-card">
-                        <div class="service-icon-box">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>
-                        </div>
-                        <h3>UI/UX Website Design</h3>
-                        <p>Desain antarmuka pengguna modern yang intuitif, bersih, dan berfokus pada estetika visual.</p>
-                    </div>
-                    <div class="service-card">
-                        <div class="service-icon-box">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
-                        </div>
-                        <h3>Digital Business Solutions</h3>
-                        <p>Konsultasi strategi bisnis digital, otomatisasi proses, dan pengembangan produk berbasis web.</p>
-                    </div>
-                </div>
-                <div class="services-extra-banner">
-                    <h3>Let's Build Something Extraordinary.</h3>
-                </div>
-            </div>
-        </section>
+/* ============ SCROLL REVEAL ============ */
+var io=null;
+function reveal(){
+  $$(".rv").forEach(function(el){io.observe(el)});
+}
+io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);if(e.target.classList.contains("inc"))countUp();if(e.target.dataset.src)loadPrev(e.target)}})},{threshold:.12,rootMargin:"0px 0px -40px 0px"});
+/* hero tampil langsung setelah zoom */
+setTimeout(function(){if(!done)return},0);
 
-        <!-- SOCIAL MEDIA & CONTACT SECTION -->
-        <section id="contact" class="contact-section">
-            <div class="container">
-                <div class="section-header">
-                    <span class="section-tag">Get In Touch</span>
-                    <h2 class="section-title">Contact & Social Media</h2>
-                    <p class="section-desc">Terhubung dengan saya melalui platform resmi atau kirimkan pesan langsung di bawah ini.</p>
-                </div>
-                <div class="contact-grid">
-                    <div class="contact-info-box">
-                        <h3>Mari Berkolaborasi Bersama</h3>
-                        <p>
-                            Punya proyek website, ide aplikasi, atau ingin berdiskusi seputar teknologi dan analisis pasar? Hubungi saya melalui salah satu saluran di bawah ini.
-                        </p>
-                        <div class="social-cards-grid" id="social-container">
-                            <!-- WhatsApp -->
-                            <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer" class="social-card-item">
-                                <div class="social-card-icon">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-                                </div>
-                                <div class="social-card-details">
-                                    <h4>WhatsApp</h4>
-                                    <span>+62 812-3456-7890</span>
-                                </div>
-                            </a>
-                            <!-- TikTok -->
-                            <a href="https://tiktok.com/@muziadriyan" target="_blank" rel="noopener noreferrer" class="social-card-item">
-                                <div class="social-card-icon">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
-                                </div>
-                                <div class="social-card-details">
-                                    <h4>TikTok</h4>
-                                    <span>@muziadriyan</span>
-                                </div>
-                            </a>
-                            <!-- Instagram -->
-                            <a href="https://instagram.com/muziadriyan" target="_blank" rel="noopener noreferrer" class="social-card-item">
-                                <div class="social-card-icon">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-                                </div>
-                                <div class="social-card-details">
-                                    <h4>Instagram</h4>
-                                    <span>@muziadriyan</span>
-                                </div>
-                            </a>
-                            <!-- GitHub -->
-                            <a href="https://github.com/muzi4you" target="_blank" rel="noopener noreferrer" class="social-card-item">
-                                <div class="social-card-icon">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-                                </div>
-                                <div class="social-card-details">
-                                    <h4>GitHub</h4>
-                                    <span>muzi4you</span>
-                                </div>
-                            </a>
-                            <!-- Telegram -->
-                            <a href="https://t.me/muziadriyan" target="_blank" rel="noopener noreferrer" class="social-card-item">
-                                <div class="social-card-icon">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-                                </div>
-                                <div class="social-card-details">
-                                    <h4>Telegram</h4>
-                                    <span>@muziadriyan</span>
-                                </div>
-                            </a>
-                            <!-- Email -->
-                            <a href="mailto:muziadriyan@email.com" class="social-card-item">
-                                <div class="social-card-icon">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-                                </div>
-                                <div class="social-card-details">
-                                    <h4>Email</h4>
-                                    <span>muziadriyan@email.com</span>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="contact-cta-buttons">
-                            <a href="#contact" class="btn btn-primary">LET'S WORK TOGETHER</a>
-                            <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">CONTACT ME</a>
-                        </div>
-                    </div>
-                    <div class="contact-form-card">
-                        <form id="contact-form" onsubmit="handleFormSubmit(event)">
-                            <div class="form-group-item">
-                                <label class="form-label-text">Nama Lengkap</label>
-                                <input type="text" class="form-input-field" placeholder="Masukkan nama Anda" required>
-                            </div>
-                            <div class="form-group-item">
-                                <label class="form-label-text">Email Anda</label>
-                                <input type="email" class="form-input-field" placeholder="nama@email.com" required>
-                            </div>
-                            <div class="form-group-item">
-                                <label class="form-label-text">Pesan / Proyek</label>
-                                <textarea class="form-textarea-field" placeholder="Tuliskan detail pesan atau proyek Anda di sini..." required></textarea>
-                            </div>
-                            <button type="submit" class="form-submit-btn">Kirim Pesan</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section>
+/* ============ PROJECT PREVIEW (situs asli, dimuat saat terlihat) ============ */
+function loadPrev(card){
+  var th=$(".thumb",card);if(!th||th.querySelector("iframe"))return;
+  var f=document.createElement("iframe");
+  f.src=card.dataset.src;f.loading="lazy";f.title="Preview "+$("h3",card).textContent;f.tabIndex=-1;f.setAttribute("aria-hidden","true");f.referrerPolicy="no-referrer";
+  f.setAttribute("sandbox","allow-scripts allow-same-origin");
+  function fit(){f.style.transform="scale("+(th.clientWidth/1280)+")"}
+  fit();addEventListener("resize",fit);
+  f.addEventListener("load",function(){f.classList.add("ok")});
+  th.appendChild(f);
+}
 
-    </main>
+/* ============ INCOME COUNT-UP ============ */
+function fmt(n){return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g,".")}
+function countUp(){
+  var el=$("#num");if(reduce){return}
+  var a=13e6,b=15e6,s=performance.now(),D=1800;
+  (function st(n){var p=Math.min(1,(n-s)/D),q=1-Math.pow(1-p,3);
+    el.textContent="Rp"+fmt(a*q)+" – Rp"+fmt(b*q);
+    if(p<1)requestAnimationFrame(st);else el.textContent="Rp13.000.000 – Rp15.000.000"})(s);
+}
 
-    <!-- FOOTER -->
-    <footer>
-        <div class="container">
-            <div class="footer-inner-box">
-                <div class="footer-brand">MUZI ADRIYAN</div>
-                <div class="footer-tagline">THINK DIGITAL. BUILD INNOVATION. CREATE THE FUTURE.</div>
-                <div class="footer-copyright">&copy; 2026 Muzi Adriyan. All Rights Reserved.</div>
-            </div>
-        </div>
-    </footer>
+/* ============ 3D TILT ============ */
+if(fine&&!reduce){
+  document.addEventListener("pointermove",function(e){
+    var c=e.target.closest&&e.target.closest(".tilt");
+    if(!c)return;
+    var r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;
+    c.style.setProperty("--ry",((x-.5)*12).toFixed(2)+"deg");c.style.setProperty("--rx",((.5-y)*12).toFixed(2)+"deg");
+    c.style.setProperty("--mx",(x*100)+"%");c.style.setProperty("--my",(y*100)+"%");
+  },{passive:true});
+  document.addEventListener("pointerout",function(e){var c=e.target.closest&&e.target.closest(".tilt");if(c&&!c.contains(e.relatedTarget)){c.style.setProperty("--rx","0deg");c.style.setProperty("--ry","0deg")}});
+}
 
-    <!-- JAVASCRIPT -->
-    <script>
-        /* ==========================================
-           CONFIGURABLE CONTACT & SOCIAL LINKS
-           ================================---------- */
-        const SOCIAL_CONFIG = {
-            whatsapp: "https://wa.me/6281234567890",
-            tiktok: "https://tiktok.com/@muziadriyan",
-            instagram: "https://instagram.com/muziadriyan",
-            github: "https://github.com/muzi4you",
-            telegram: "https://t.me/muziadriyan",
-            email: "mailto:muziadriyan@email.com"
-        };
-
-        /* ==========================================
-           AUTOMATIC LOADING SCREEN (3.5 SECONDS)
-           ================================---------- */
-        document.addEventListener('DOMContentLoaded', () => {
-            const progressBar = document.getElementById('progress-bar');
-            const progressPercentage = document.getElementById('progress-percentage');
-            const loadingScreen = document.getElementById('loading-screen');
-            
-            let progress = 0;
-            // 3.5 seconds total -> increments every ~35ms
-            const loadingInterval = setInterval(() => {
-                progress += Math.floor(Math.random() * 5) + 2;
-                if (progress >= 100) {
-                    progress = 100;
-                    clearInterval(loadingInterval);
-                    
-                    setTimeout(() => {
-                        loadingScreen.classList.add('fade-out');
-                        document.body.style.overflow = 'auto';
-                    }, 300);
-                }
-                progressBar.style.width = progress + '%';
-                progressPercentage.textContent = progress + '%';
-            }, 35);
-
-            document.body.style.overflow = 'hidden';
-        });
-
-        /* ==========================================
-           CUSTOM DESKTOP CURSOR
-           ================================---------- */
-        const cursorDot = document.getElementById('cursor-dot');
-        const cursorRing = document.getElementById('cursor-ring');
-
-        let mouseX = 0, mouseY = 0;
-        let ringX = 0, ringY = 0;
-
-        window.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            cursorDot.style.transform = `translate3d(${mouseX - 4}px, ${mouseY - 4}px, 0)`;
-        });
-
-        function renderCursor() {
-            ringX += (mouseX - ringX) * 0.15;
-            ringY += (mouseY - ringY) * 0.15;
-            cursorRing.style.transform = `translate3d(${ringX - 20}px, ${ringY - 20}px, 0)`;
-            requestAnimationFrame(renderCursor);
-        }
-        requestAnimationFrame(renderCursor);
-
-        const interactiveElements = document.querySelectorAll('a, button, input, textarea, .expertise-card, .project-card, .service-card, .social-card-item');
-        interactiveElements.forEach(el => {
-            el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
-            el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
-        });
-
-        /* ==========================================
-           BACKGROUND CANVAS GRID & PARTICLES
-           ================================---------- */
-        const canvas = document.getElementById('bg-canvas');
-        const ctx = canvas.getContext('2d');
-
-        let particlesArray = [];
-        const numberOfParticles = 35;
-
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 1.5 + 0.8;
-                this.speedX = (Math.random() - 0.5) * 0.4;
-                this.speedY = (Math.random() - 0.5) * 0.4;
-            }
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                if (this.x > canvas.width) this.x = 0;
-                else if (this.x < 0) this.x = canvas.width;
-                if (this.y > canvas.height) this.y = 0;
-                else if (this.y < 0) this.y = canvas.height;
-            }
-            draw() {
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-
-        function initParticles() {
-            particlesArray = [];
-            for (let i = 0; i < numberOfParticles; i++) {
-                particlesArray.push(new Particle());
-            }
-        }
-        initParticles();
-
-        function animateCanvas() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let i = 0; i < particlesArray.length; i++) {
-                particlesArray[i].update();
-                particlesArray[i].draw();
-
-                for (let j = i + 1; j < particlesArray.length; j++) {
-                    const dx = particlesArray[i].x - particlesArray[j].x;
-                    const dy = particlesArray[i].y - particlesArray[j].y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-                    if (distance < 130) {
-                        ctx.strokeStyle = `rgba(255, 255, 255, ${0.08 * (1 - distance / 130)})`;
-                        ctx.lineWidth = 0.5;
-                        ctx.beginPath();
-                        ctx.moveTo(particlesArray[i].x, particlesArray[i].y);
-                        ctx.lineTo(particlesArray[j].x, particlesArray[j].y);
-                        ctx.stroke();
-                    }
-                }
-            }
-            requestAnimationFrame(animateCanvas);
-        }
-        animateCanvas();
-
-        /* ==========================================
-           TYPING ANIMATION
-           ================================---------- */
-        const roles = [
-            "WEB DEVELOPER",
-            "DIGITAL CREATOR",
-            "TECHNOLOGY ENTHUSIAST",
-            "MARKET ANALYST"
-        ];
-        let roleIndex = 0;
-        let charIndex = 0;
-        let isDeleting = false;
-        const typingText = document.getElementById('typing-text');
-
-        function typeEffect() {
-            const currentRole = roles[roleIndex];
-            if (isDeleting) {
-                typingText.textContent = currentRole.substring(0, charIndex - 1);
-                charIndex--;
-            } else {
-                typingText.textContent = currentRole.substring(0, charIndex + 1);
-                charIndex++;
-            }
-
-            let typeSpeed = isDeleting ? 45 : 95;
-
-            if (!isDeleting && charIndex === currentRole.length) {
-                typeSpeed = 2200;
-                isDeleting = true;
-            } else if (isDeleting && charIndex === 0) {
-                isDeleting = false;
-                roleIndex = (roleIndex + 1) % roles.length;
-                typeSpeed = 400;
-            }
-
-            setTimeout(typeEffect, typeSpeed);
-        }
-        setTimeout(typeEffect, 1200);
-
-        /* ==========================================
-           NAVBAR SCROLL & MOBILE MENU
-           ================================---------- */
-        const header = document.getElementById('header');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 40) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
-
-        const hamburger = document.getElementById('hamburger');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
-
-        hamburger.addEventListener('click', () => {
-            mobileMenu.classList.toggle('active');
-            document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : 'auto';
-        });
-
-        mobileNavLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.remove('active');
-                document.body.style.overflow = 'auto';
-            });
-        });
-
-        /* ==========================================
-           ANIMATED COUNTERS FOR STATS
-           ================================---------- */
-        const statNumbers = document.querySelectorAll('.about-stat-num');
-        let animated = false;
-
-        function runCounters() {
-            statNumbers.forEach(stat => {
-                const target = +stat.getAttribute('data-target');
-                let count = 0;
-                const speed = target / 25;
-
-                const updateCount = () => {
-                    count += speed;
-                    if (count < target) {
-                        stat.textContent = Math.ceil(count);
-                        setTimeout(updateCount, 40);
-                    } else {
-                        stat.textContent = target + (target === 100 ? '%' : (target === 5 ? '+' : (target === 24 ? '/7' : '+')));
-                    }
-                };
-                updateCount();
-            });
-        }
-
-        const aboutSection = document.getElementById('about');
-        window.addEventListener('scroll', () => {
-            const rect = aboutSection.getBoundingClientRect();
-            if (rect.top < window.innerHeight && !animated) {
-                runCounters();
-                animated = true;
-            }
-        });
-
-        /* ==========================================
-           3D TILT EFFECT FOR PROFILE CARD
-           ================================---------- */
-        const profileCard = document.getElementById('profile-3d-card');
-        if (profileCard) {
-            profileCard.addEventListener('mousemove', (e) => {
-                const rect = profileCard.getBoundingClientRect();
-                const x = e.clientX - rect.left - rect.width / 2;
-                const y = e.clientY - rect.top - rect.height / 2;
-                profileCard.style.transform = `rotateY(${x * 0.05}deg) rotateX(${-y * 0.05}deg) translateY(-8px)`;
-            });
-            profileCard.addEventListener('mouseleave', () => {
-                profileCard.style.transform = `rotateY(0deg) rotateX(0deg) translateY(0)`;
-            });
-        }
-
-        /* ==========================================
-           FORM SUBMISSION HANDLER
-           ================================---------- */
-        function handleFormSubmit(event) {
-            event.preventDefault();
-            alert('Terima kasih! Pesan Anda telah berhasil dikirim kepada Muzi Adriyan.');
-            document.getElementById('contact-form').reset();
-        }
-    </script>
+/* ============ NAV ============ */
+var burger=$("#burger"),menu=$("#menu");
+burger.addEventListener("click",function(){var o=menu.classList.toggle("open");burger.classList.toggle("open",o);burger.setAttribute("aria-expanded",o)});
+$$("#menu a").forEach(function(a){a.addEventListener("click",function(){menu.classList.remove("open");burger.classList.remove("open");burger.setAttribute("aria-expanded","false")})});
+var links=$$("#menu a"),secs=links.map(function(a){return $(a.getAttribute("href"))});
+var so=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){links.forEach(function(l){l.classList.toggle("on",l.getAttribute("href")==="#"+e.target.id)})}})},{rootMargin:"-45% 0px -50% 0px"});
+secs.forEach(function(s){if(s)so.observe(s)});
+})();
+</script>
 </body>
 </html>
